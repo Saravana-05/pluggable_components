@@ -1,0 +1,63 @@
+{
+    "name": "ButtonX",
+    "category": "Buttons",
+    "type": "local",
+    "entry": "./index.tsx",
+    "enabled": true,
+    "ui": {
+        "canvasIcon": "./favicon.svg"
+    },
+    "actions": [
+        {
+            "trigger": "iconClick",
+            "type": "redirect",
+            "url": "/landing",
+            "target": "_self"
+        },
+        {
+            "trigger": "buttonClick",
+            "type": "redirect",
+            "url": "/landing",
+            "target": "_self"
+        }
+    ],
+    "settings": {
+        "schema": {
+            "type": "object",
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "variant": {
+                    "type": "string",
+                    "enum": [
+                        "primary",
+                        "secondary",
+                        "danger",
+                        "ghost"
+                    ]
+                },
+                "size": {
+                    "type": "string",
+                    "enum": [
+                        "sm",
+                        "md",
+                        "lg"
+                    ]
+                },
+                "fullWidth": {
+                    "type": "boolean"
+                },
+                "disabled": {
+                    "type": "boolean"
+                }
+            }
+        }
+    },
+    "events": [
+        {
+            "name": "onClick",
+            "label": "On Click"
+        }
+    ]
+}

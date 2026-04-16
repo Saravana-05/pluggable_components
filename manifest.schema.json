@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "components"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "string"
+    },
+    "components": {
+      "type": "object"
+    }
+  }
+}

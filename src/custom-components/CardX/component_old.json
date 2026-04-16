@@ -1,0 +1,74 @@
+{
+    "name": "CardX",
+    "category": "Cards",
+    "type": "local",
+    "entry": "./index.tsx",
+    "enabled": true,
+    "ui": {
+        "canvasIcon": "./card-canvas-icon.svg"
+    },
+    "actions": [
+        {
+            "trigger": "iconClick",
+            "type": "redirect",
+            "url": "/landing",
+            "target": "_self"
+        },
+        {
+            "trigger": "buttonClick",
+            "type": "redirect",
+            "url": "/landing",
+            "target": "_self"
+        }
+    ],
+    "settings": {
+        "schema": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "imageUrl": {
+                    "type": "string"
+                },
+                "variant": {
+                    "type": "string",
+                    "enum": [
+                        "default",
+                        "bordered",
+                        "elevated"
+                    ]
+                },
+                "size": {
+                    "type": "string",
+                    "enum": [
+                        "sm",
+                        "md",
+                        "lg"
+                    ]
+                },
+                "badge": {
+                    "type": "string"
+                },
+                "badgeColor": {
+                    "type": "string",
+                    "enum": [
+                        "purple",
+                        "green",
+                        "red",
+                        "blue"
+                    ]
+                }
+            }
+        }
+    },
+    "events": [
+        {
+            "name": "onClick",
+            "label": "On Click"
+        }
+    ]
+}

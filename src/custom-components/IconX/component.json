@@ -1,0 +1,49 @@
+{
+    "name": "IconX",
+    "category": "Icons",
+    "type": "local",
+    "entry": "./index.tsx",
+    "enabled": true,
+    "ui": {
+        "canvasIcon": "./icon-preview.svg"
+    },
+    "actions": [
+        {
+            "trigger": "iconClick",
+            "type": "redirect",
+            "url": "/landing",
+            "target": "_self"
+        }
+    ],
+    "settings": {
+        "schema": {
+            "type": "object",
+            "properties": {
+                "src": {
+                    "type": "string"
+                },
+                "size": {
+                    "type": "string",
+                    "enum": [
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl"
+                    ]
+                },
+                "color": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "events": [
+        {
+            "name": "onClick",
+            "label": "On Click"
+        }
+    ]
+}
