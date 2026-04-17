@@ -22,7 +22,14 @@
                 "target": null,
                 "accentColor": "indigo",
                 "size": "md",
-                "locale": "en",
+                "i18n": {
+                    "en": {
+                        "vsPrev": "vs prev",
+                        "progress": "Progress",
+                        "of": "of",
+                        "label": "Metric Name"
+                    }
+                },
                 "sparkData": [],
                 "icon": "chart-bar",
                 "currency": null
@@ -52,7 +59,22 @@
                         "target": null,
                         "accentColor": "amber",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Active Projects",
+                                "trendLabel": "new"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "செயலில் உள்ள திட்டங்கள்",
+                                "trendLabel": "புதியது"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "folder",
                         "currency": null
@@ -68,7 +90,20 @@
                         "target": null,
                         "accentColor": "green",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "On Track"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "சரியான பாதையில்"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "trending-up",
                         "currency": null
@@ -84,7 +119,22 @@
                         "target": null,
                         "accentColor": "red",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Delayed Projects",
+                                "trendLabel": "more"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "தாமதமான திட்டங்கள்",
+                                "trendLabel": "அதிகம்"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "warning-triangle",
                         "currency": null
@@ -101,7 +151,22 @@
                         "targetLabel": "Forecast",
                         "accentColor": "amber",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Revenue vs Forecast",
+                                "targetLabel": "Forecast"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "வருவாய் எதிர் முன்னறிவிப்பு",
+                                "targetLabel": "முன்னறிவிப்பு"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "currency-dollar",
                         "currency": {
@@ -121,7 +186,22 @@
                         "target": null,
                         "accentColor": "green",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Cash Flow",
+                                "trendLabel": "Healthy"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "பண ஓட்டம்",
+                                "trendLabel": "ஆரோக்கியமானது"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "wallet",
                         "currency": null
@@ -137,7 +217,20 @@
                         "target": null,
                         "accentColor": "cyan",
                         "size": "md",
-                        "locale": "en",
+                        "i18n": {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Resource Utilization"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "வள பயன்பாடு"
+                            }
+                        },
                         "sparkData": [],
                         "icon": "person-group",
                         "currency": null
@@ -152,7 +245,7 @@
             "properties": {
                 "label": {
                     "type": "string",
-                    "description": "Metric name shown above the value"
+                    "description": "Default metric name shown above the value. Can be overridden per-language via the i18n.{lang}.label key."
                 },
                 "value": {
                     "type": [
@@ -164,7 +257,7 @@
                 },
                 "unit": {
                     "type": "string",
-                    "description": "Unit suffix e.g. %, ms, $, K"
+                    "description": "Default unit suffix (e.g. %, ms). Can be overridden per-language via i18n.{lang}.unit."
                 },
                 "icon": {
                     "type": "string",
@@ -186,53 +279,104 @@
                         "star"
                     ]
                 },
+                "i18n": {
+                    "type": "object",
+                    "description": "Multilingual label map. Keys are BCP-47 language codes (e.g. \"en\", \"ta\", \"fr\", \"ar\"). Values are label maps for each language. The first key becomes the default active language. When two or more languages are supplied, a language-selector appears at the bottom of the card.",
+                    "additionalProperties": {
+                        "type": "object",
+                        "description": "Label map for a single language. All keys are optional — missing keys fall back to built-in English strings.",
+                        "properties": {
+                            "vsPrev": {
+                                "type": "string",
+                                "description": "Suffix shown in the trend badge, e.g. \"vs prev\" or \"vs préc.\""
+                            },
+                            "progress": {
+                                "type": "string",
+                                "description": "Label shown above the progress bar, e.g. \"Progress\" or \"Progression\""
+                            },
+                            "of": {
+                                "type": "string",
+                                "description": "Separator between progress percentage and target, e.g. \"of\" or \"/\""
+                            },
+                            "label": {
+                                "type": "string",
+                                "description": "Overrides the top-level `label` prop for this language"
+                            },
+                            "unit": {
+                                "type": "string",
+                                "description": "Overrides the top-level `unit` prop for this language"
+                            },
+                            "targetLabel": {
+                                "type": "string",
+                                "description": "Overrides the top-level `targetLabel` prop for this language"
+                            },
+                            "trendLabel": {
+                                "type": "string",
+                                "description": "Overrides the top-level `trendLabel` prop for this language"
+                            }
+                        },
+                        "additionalProperties": {
+                            "type": "string",
+                            "description": "Any custom label key-value pairs for this language"
+                        }
+                    },
+                    "examples": [
+                        {
+                            "en": {
+                                "vsPrev": "vs prev",
+                                "progress": "Progress",
+                                "of": "of",
+                                "label": "Revenue"
+                            },
+                            "ta": {
+                                "vsPrev": "முந்தையதுடன்",
+                                "progress": "முன்னேற்றம்",
+                                "of": "/",
+                                "label": "வருவாய்"
+                            },
+                            "ar": {
+                                "vsPrev": "مقابل السابق",
+                                "progress": "التقدم",
+                                "of": "من",
+                                "label": "الإيرادات"
+                            }
+                        }
+                    ]
+                },
+                "activeLocale": {
+                    "type": "string",
+                    "description": "Programmatically control the active language from outside the component. Must match a key present in `i18n`. Changing this prop triggers `onLanguageChange`."
+                },
                 "currency": {
                     "type": [
                         "object",
                         "null"
                     ],
-                    "description": "Currency formatting config. Set null to disable. When set, formats the value as currency.",
+                    "description": "Currency formatting config. Set null to disable.",
                     "properties": {
                         "symbol": {
                             "type": "string",
-                            "description": "Currency symbol e.g. $, €, £, ₹, ¥",
-                            "examples": [
-                                "$",
-                                "€",
-                                "£",
-                                "₹",
-                                "¥",
-                                "₩"
-                            ]
+                            "description": "Currency symbol e.g. $, €, £, ₹, ¥"
                         },
                         "position": {
                             "type": "string",
                             "enum": [
                                 "prefix",
                                 "suffix"
-                            ],
-                            "description": "Whether symbol appears before or after the value"
+                            ]
                         },
                         "compact": {
                             "type": "boolean",
-                            "description": "When true, shortens large numbers: 2400000000 → $2.4B"
+                            "description": "Shorten large numbers: 2400000000 → $2.4B"
                         },
                         "decimalPlaces": {
                             "type": "integer",
                             "minimum": 0,
-                            "maximum": 4,
-                            "description": "Number of decimal places to show (default 0 for compact, 2 otherwise)"
+                            "maximum": 4
                         },
                         "code": {
                             "type": "string",
-                            "description": "ISO 4217 currency code for locale-aware formatting e.g. USD, EUR, INR",
-                            "examples": [
-                                "USD",
-                                "EUR",
-                                "GBP",
-                                "INR",
-                                "JPY"
-                            ]
+                            "description": "ISO 4217 currency code e.g. USD, EUR, INR"
                         }
                     },
                     "required": [
@@ -242,14 +386,14 @@
                 },
                 "trendLabel": {
                     "type": "string",
-                    "description": "Custom label shown in the trend badge (e.g. 'new', 'more', 'Healthy'). Overrides the default unit/percentage."
+                    "description": "Default custom label in the trend badge. Can be overridden per-language via i18n.{lang}.trendLabel."
                 },
                 "trendValue": {
                     "type": [
                         "number",
                         "string"
                     ],
-                    "description": "% change vs previous period (negative = down). Accepts a number or a canvas binding like {{myTrendVar}}",
+                    "description": "% change vs previous period (negative = down). Accepts a number or a canvas binding.",
                     "x-binding": true
                 },
                 "trend": {
@@ -264,7 +408,7 @@
                 },
                 "positiveIsGood": {
                     "type": "boolean",
-                    "description": "When false, up trend is red (for error rates, latency etc.)"
+                    "description": "When false, an up trend is shown in red (for error rates, latency, etc.)"
                 },
                 "target": {
                     "type": [
@@ -272,12 +416,12 @@
                         "string",
                         "null"
                     ],
-                    "description": "Goal value — shows a progress bar when set. Accepts a number or a canvas binding like {{myTarget}}",
+                    "description": "Goal value — shows a progress bar when set.",
                     "x-binding": true
                 },
                 "targetLabel": {
                     "type": "string",
-                    "description": "Label shown next to the target/forecast value (e.g. 'Forecast', 'Goal', 'Budget')"
+                    "description": "Default label shown next to the target value. Can be overridden via i18n.{lang}.targetLabel."
                 },
                 "sparkData": {
                     "type": "array",
@@ -307,20 +451,6 @@
                         "sm",
                         "md",
                         "lg"
-                    ]
-                },
-                "locale": {
-                    "type": "string",
-                    "enum": [
-                        "en",
-                        "fr",
-                        "de",
-                        "es",
-                        "ja",
-                        "ar",
-                        "zh",
-                        "hi",
-                        "ta"
                     ]
                 },
                 "cards": {
@@ -360,6 +490,39 @@
                                     "bolt",
                                     "star"
                                 ]
+                            },
+                            "i18n": {
+                                "type": "object",
+                                "description": "Per-card multilingual label map. Same structure as the top-level i18n prop.",
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "vsPrev": {
+                                            "type": "string"
+                                        },
+                                        "progress": {
+                                            "type": "string"
+                                        },
+                                        "of": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "unit": {
+                                            "type": "string"
+                                        },
+                                        "targetLabel": {
+                                            "type": "string"
+                                        },
+                                        "trendLabel": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
                             },
                             "currency": {
                                 "type": [
@@ -443,9 +606,6 @@
                                     "lg"
                                 ]
                             },
-                            "locale": {
-                                "type": "string"
-                            },
                             "sparkData": {
                                 "type": "array"
                             }
@@ -454,7 +614,7 @@
                 },
                 "labels": {
                     "type": "object",
-                    "description": "Override any displayed label string",
+                    "description": "Deprecated — use i18n instead. Override any displayed label string.",
                     "properties": {
                         "trend_up": {
                             "type": "string"
@@ -487,6 +647,59 @@
         {
             "name": "onClick",
             "label": "On Click"
+        },
+        {
+            "name": "onLanguageChange",
+            "label": "On Language Change",
+            "description": "Fired whenever the active language changes, either by the user clicking the language selector or by an external activeLocale prop update.",
+            "payload": {
+                "type": "object",
+                "properties": {
+                    "prev": {
+                        "type": "string",
+                        "description": "BCP-47 code of the language that was active before the switch (e.g. \"en\")"
+                    },
+                    "next": {
+                        "type": "string",
+                        "description": "BCP-47 code of the language now active (e.g. \"ta\")"
+                    },
+                    "labels": {
+                        "type": "object",
+                        "description": "Full merged label map for the newly active language. All built-in keys are guaranteed to be present.",
+                        "properties": {
+                            "vsPrev": {
+                                "type": "string"
+                            },
+                            "progress": {
+                                "type": "string"
+                            },
+                            "of": {
+                                "type": "string"
+                            },
+                            "label": {
+                                "type": "string"
+                            },
+                            "unit": {
+                                "type": "string"
+                            },
+                            "targetLabel": {
+                                "type": "string"
+                            },
+                            "trendLabel": {
+                                "type": "string"
+                            }
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": [
+                    "prev",
+                    "next",
+                    "labels"
+                ]
+            }
         }
     ]
 }

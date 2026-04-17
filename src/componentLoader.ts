@@ -1,41 +1,35 @@
+function unwrap(m: any): any {
+  if (m == null) return m
+  if (typeof m === 'object' && (m as any)[Symbol.toStringTag] === 'Module') {
+    const d = m.default
+    if (d != null && typeof d === 'object' && (d as any)[Symbol.toStringTag] === 'Module')
+      return d.default ?? d
+    return d ?? m
+  }
+  return m
+}
+
 export class ComponentLoader {
   registry: Record<string, any> = {}
   meta: Record<string, any> = {}
 
   async loadComponent(config: any) {
-    const mod = await import(/* @vite-ignore */ config.entry)
-    return mod.default || mod
+    return unwrap(await import(/* @vite-ignore */ config.entry))
   }
 
   async load(manifest: any, order: string[]) {
     for (const name of order) {
       const cfg = manifest.components[name]
       if (!cfg) continue
-
-      // FIX: manifestBuilder stores { component, config } shape.
-      // cfg.enabled doesn't exist — the enabled flag is on cfg.config.enabled.
-      // Also, components loaded via eager glob already have .component set directly,
-      // so we don't need loadComponent() for those — just register directly.
-      if (cfg.config?.enabled === false) continue
-
-      // If the component was already bundled by manifestBuilder (eager glob), use it directly.
-      // Otherwise fall back to dynamic import via config.entry.
-      const comp = cfg.component ?? await this.loadComponent(cfg.config ?? cfg)
-
+      const resolvedConfig = unwrap(cfg.config) ?? unwrap(cfg)
+      if (resolvedConfig?.enabled === false) continue
+      const comp = unwrap(cfg.component) ?? await this.loadComponent(resolvedConfig)
       this.registry[name] = comp
-      this.meta[name] = cfg.config ?? cfg
+      this.meta[name]     = resolvedConfig
     }
   }
 
-  get(name: string) {
-    return this.registry[name]
-  }
-
-  getMeta(name: string) {
-    return this.meta[name]
-  }
-
-  getAllMeta() {
-    return this.meta
-  }
+  get(name: string) { return this.registry[name] }
+  getMeta(name: string) { return this.meta[name] }
+  getAllMeta() { return this.meta }
 }

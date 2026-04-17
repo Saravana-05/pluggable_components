@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
+import { useI18n, safeLocale } from '../../hooks/useI18n'
 
-// ─── Icon map ─────────────────────────────────────────────────────────────────
+// ─── Icon map ──────────────────────────────────────────────────────────────────
 const ICON_PATHS: Record<string, string> = {
   'folder':           'M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z',
   'trending-up':      'M3 17l6-6 4 4 8-8M17 7h4v4',
@@ -21,7 +22,7 @@ const ICON_PATHS: Record<string, string> = {
   'package':          'M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16zM3.27 6.96L12 12.01l8.73-5.05M12 22.08V12',
 }
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types ─────────────────────────────────────────────────────────────────────
 
 interface CurrencyConfig {
   symbol: string
@@ -42,29 +43,15 @@ interface StatCardProps {
   targetLabel?: string
   accentColor?: 'indigo' | 'green' | 'red' | 'amber' | 'cyan'
   size?: 'sm' | 'md' | 'lg'
-  locale?: string
+  i18n?: Record<string, Record<string, string>>
+  onLanguageChange?: (event: { prev: string; next: string; labels: Record<string, string> }) => void
+  activeLocale?: string
   sparkData?: { value: number }[]
   icon?: string
   currency?: CurrencyConfig | null
 }
 
-// ─── Locale packs ─────────────────────────────────────────────────────────────
-// Each entry provides the 3 strings rendered in the card UI.
-// Adding a new language: add a key matching the locale code used in the schema.
-
-const STAT_LOCALES: Record<string, { vsPrev: string; progress: string; of: string }> = {
-  en: { vsPrev: 'vs prev',            progress: 'Progress',       of: 'of'  },
-  fr: { vsPrev: 'vs préc.',           progress: 'Progression',    of: 'de'  },
-  de: { vsPrev: 'vs. Vorper.',        progress: 'Fortschritt',    of: 'von' },
-  es: { vsPrev: 'vs anterior',        progress: 'Progreso',       of: 'de'  },
-  ja: { vsPrev: '前期比',              progress: '進捗',            of: '/'   },
-  ar: { vsPrev: 'مقابل السابق',       progress: 'التقدم',          of: 'من'  },
-  zh: { vsPrev: '较上期',              progress: '进度',            of: '/'   },
-  hi: { vsPrev: 'बनाम पिछला',         progress: 'प्रगति',           of: '/'   },
-  ta: { vsPrev: 'முந்தையதுடன்',       progress: 'முன்னேற்றம்',      of: '/'   },
-}
-
-// ─── Tokens ───────────────────────────────────────────────────────────────────
+// ─── Tokens ────────────────────────────────────────────────────────────────────
 
 const accent = {
   indigo: { color: '#818cf8', bg: 'rgba(99,102,241,0.15)',  border: 'rgba(99,102,241,0.3)'  },
@@ -80,7 +67,7 @@ const sizes = {
   lg: { width: 270, padding: 20, valueSize: 36, labelSize: 13, iconSize: 22 },
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helpers ───────────────────────────────────────────────────────────────────
 
 function isUnresolvedBinding(v: unknown): boolean {
   return typeof v === 'string' && /^\s*\{\{.+\}\}\s*$/.test(v)
@@ -94,102 +81,125 @@ function resolveNumber(v: number | string | undefined | null, fallback = 0): num
 }
 
 function isImageUrl(icon: string): boolean {
-  return (
-    icon.startsWith('http') ||
-    icon.startsWith('data:') ||
-    icon.startsWith('/') ||
-    icon.startsWith('./') ||
-    icon.includes('.')
-  )
+  return icon.startsWith('http') || icon.startsWith('data:') || icon.startsWith('/') || icon.startsWith('./') || icon.includes('.')
 }
 
 function formatCurrency(value: number, cfg: CurrencyConfig, locale: string): string {
+  const loc = safeLocale(locale)
   const { symbol, position, compact = false, decimalPlaces } = cfg
-
   let formatted: string
-
   if (compact) {
     const tiers = [
-      { threshold: 1e12, suffix: 'T' },
-      { threshold: 1e9,  suffix: 'B' },
-      { threshold: 1e6,  suffix: 'M' },
-      { threshold: 1e3,  suffix: 'K' },
+      { threshold: 1e12, suffix: 'T' }, { threshold: 1e9, suffix: 'B' },
+      { threshold: 1e6, suffix: 'M' },  { threshold: 1e3, suffix: 'K' },
     ]
     const tier = tiers.find((t) => Math.abs(value) >= t.threshold)
     if (tier) {
       const dp = decimalPlaces ?? 1
-      const compacted = (value / tier.threshold).toFixed(dp).replace(/\.0+$/, '')
-      formatted = `${compacted}${tier.suffix}`
+      formatted = `${(value / tier.threshold).toFixed(dp).replace(/\.0+$/, '')}${tier.suffix}`
     } else {
-      const dp = decimalPlaces ?? 0
-      formatted = value.toLocaleString(locale, { maximumFractionDigits: dp })
+      formatted = value.toLocaleString(loc, { maximumFractionDigits: decimalPlaces ?? 0 })
     }
   } else {
     const dp = decimalPlaces ?? 2
-    formatted = value.toLocaleString(locale, {
-      minimumFractionDigits: dp,
-      maximumFractionDigits: dp,
-    })
+    formatted = value.toLocaleString(loc, { minimumFractionDigits: dp, maximumFractionDigits: dp })
   }
-
   return position === 'prefix' ? `${symbol}${formatted}` : `${formatted}${symbol}`
 }
 
-// ─── Icon renderer ────────────────────────────────────────────────────────────
+// ─── Icon renderer ─────────────────────────────────────────────────────────────
 
 function CardIcon({ icon, size, color }: { icon: string; size: number; color: string }) {
   if (isImageUrl(icon)) {
-    return (
-      <img
-        src={icon}
-        alt=""
-        width={size}
-        height={size}
-        style={{ objectFit: 'contain', display: 'block' }}
-      />
-    )
+    return <img src={icon} alt="" width={size} height={size} style={{ objectFit: 'contain', display: 'block' }} />
   }
-
   const path = ICON_PATHS[icon]
   if (!path) return null
-
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={color}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
       <path d={path} />
     </svg>
   )
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Language metadata ─────────────────────────────────────────────────────────
+
+const LANG_META: Record<string, { flag: string; native: string }> = {
+  en: { flag: '🇬🇧', native: 'English' },  ta: { flag: '🇮🇳', native: 'தமிழ்' },
+  ar: { flag: '🇸🇦', native: 'عربي' },     hi: { flag: '🇮🇳', native: 'हिंदी' },
+  fr: { flag: '🇫🇷', native: 'Français' }, de: { flag: '🇩🇪', native: 'Deutsch' },
+  es: { flag: '🇪🇸', native: 'Español' },  zh: { flag: '🇨🇳', native: '中文' },
+  ja: { flag: '🇯🇵', native: '日本語' },   ko: { flag: '🇰🇷', native: '한국어' },
+  pt: { flag: '🇧🇷', native: 'Português' },ru: { flag: '🇷🇺', native: 'Русский' },
+}
+
+// ─── Language selector ─────────────────────────────────────────────────────────
+
+function LanguageSelector({ langs, active, color, onChange }: {
+  langs: string[]; active: string; color: string; onChange: (lang: string) => void
+}) {
+  if (langs.length < 2) return null
+  return (
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      {langs.map((lang) => {
+        const isActive = lang === active
+        const meta = LANG_META[lang]
+        return (
+          <button key={lang} onClick={() => onChange(lang)} title={meta?.native ?? lang} style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11,
+            fontWeight: isActive ? 600 : 400, padding: '4px 9px', borderRadius: 20,
+            border: `1px solid ${isActive ? color : 'rgba(255,255,255,0.12)'}`,
+            background: isActive ? `${color}20` : 'rgba(255,255,255,0.04)',
+            color: isActive ? color : '#6b7280', cursor: 'pointer',
+            transition: 'all 0.15s', whiteSpace: 'nowrap', fontFamily: 'inherit',
+          }}>
+            {meta && <span style={{ fontSize: 13, lineHeight: 1 }}>{meta.flag}</span>}
+            <span>{isActive && meta ? meta.native : lang.toUpperCase()}</span>
+            {isActive && <span style={{ fontSize: 10, opacity: 0.8 }}>✓</span>}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+// ─── Component ─────────────────────────────────────────────────────────────────
 
 export default function StatCard({
-  label          = 'Metric Name',
-  value          = 0,
-  unit           = '',
-  trend          = 'auto',
-  trendValue     = 0,
-  trendLabel,
-  positiveIsGood = true,
-  target         = null,
-  targetLabel    = 'Target',
-  accentColor    = 'indigo',
-  size           = 'md',
-  locale         = 'en',
-  sparkData      = [],
-  icon,
-  currency,
+  label = 'Metric Name', value = 0, unit = '', trend = 'auto',
+  trendValue = 0, trendLabel, positiveIsGood = true, target = null,
+  targetLabel = 'Target', accentColor = 'indigo', size = 'md',
+  i18n, activeLocale: controlledLocale, onLanguageChange,
+  sparkData = [], icon, currency,
 }: StatCardProps) {
 
-  // ── Resolve bound values ──────────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════════════════
+  // useI18n replaces ALL the old manual locale logic:
+  //   - safeI18n guard
+  //   - langs / defaultLang derivation
+  //   - useState for internalLocale
+  //   - useEffect to sync controlledLocale
+  //   - handleLangChange callback
+  //   - mergeLabels / resolvedLabel / resolvedUnit / etc.
+  //   - isRtl check
+  // ═══════════════════════════════════════════════════════════════════════════
+  const { t, activeLocale, langs, switchLang, isRtl } = useI18n({
+    i18n,
+    activeLocale: controlledLocale,
+    onLanguageChange,
+    fallback: {
+      vsPrev: 'vs prev', progress: 'Progress', of: 'of',
+      label: '', unit: '', targetLabel: 'Target', trendLabel: '',
+    },
+  })
+
+  // i18n overrides fall back to prop values
+  const resolvedLabel       = t('label')       || label
+  const resolvedUnit        = t('unit')        || unit
+  const resolvedTargetLabel = t('targetLabel') || targetLabel
+  const resolvedTrendLabel  = t('trendLabel')  || trendLabel
+
+  // ── Numeric values ─────────────────────────────────────────────────────────
   const _value      = resolveNumber(value)
   const _trendValue = resolveNumber(trendValue)
   const _target     = target != null ? resolveNumber(target as number | string) : null
@@ -197,264 +207,134 @@ export default function StatCard({
   const isValueBinding      = isUnresolvedBinding(value)
   const isTrendValueBinding = isUnresolvedBinding(trendValue)
 
-  const a   = accent[accentColor] ?? accent.indigo
-  const s   = sizes[size]         ?? sizes.md
+  const a = accent[accentColor] ?? accent.indigo
+  const s = sizes[size] ?? sizes.md
 
-  // ── Locale resolution ─────────────────────────────────────────────────────
-  // Falls back to 'en' for any unrecognised locale code so the UI never breaks.
-  const t   = STAT_LOCALES[locale] ?? STAT_LOCALES.en
-  const loc = locale || 'en'
+  // ── Trend ──────────────────────────────────────────────────────────────────
+  const direction = trend === 'auto'
+    ? _trendValue > 0 ? 'up' : _trendValue < 0 ? 'down' : 'neutral'
+    : trend
 
-  // RTL layout for Arabic
-  const isRtl = locale === 'ar'
+  const isGood = direction === 'neutral' ? null : positiveIsGood ? direction === 'up' : direction === 'down'
+  const trendColor = isGood === null ? '#6b7280' : isGood ? '#4ade80' : '#f87171'
+  const trendIcon = direction === 'up' ? '↑' : direction === 'down' ? '↓' : '→'
 
-  // ── Trend direction ───────────────────────────────────────────────────────
-  const direction =
-    trend === 'auto'
-      ? _trendValue > 0 ? 'up' : _trendValue < 0 ? 'down' : 'neutral'
-      : trend
+  // ── Progress ───────────────────────────────────────────────────────────────
+  const progress = _target != null && _target > 0
+    ? Math.min(100, Math.round((_value / _target) * 100)) : null
 
-  const isGood =
-    direction === 'neutral' ? null :
-    positiveIsGood          ? direction === 'up'
-                            : direction === 'down'
+  // ── Formatted values ───────────────────────────────────────────────────────
+  const loc = safeLocale(activeLocale)
 
-  const trendColor =
-    isGood === null ? '#6b7280' :
-    isGood          ? '#4ade80' : '#f87171'
-
-  const trendIcon =
-    direction === 'up' ? '↑' : direction === 'down' ? '↓' : '→'
-
-  // ── Progress ──────────────────────────────────────────────────────────────
-  const progress =
-    _target != null && _target > 0
-      ? Math.min(100, Math.round((_value / _target) * 100))
-      : null
-
-  // ── Formatted value ───────────────────────────────────────────────────────
   const displayValue = useMemo(() => {
     if (isValueBinding) return (value as string).trim()
-    if (currency) return formatCurrency(_value, currency, loc)
+    if (currency) return formatCurrency(_value, currency, activeLocale)
     return _value.toLocaleString(loc)
-  }, [_value, isValueBinding, value, currency, loc])
+  }, [_value, isValueBinding, value, currency, activeLocale, loc])
 
-  // ── Target display ────────────────────────────────────────────────────────
   const displayTarget = useMemo(() => {
     if (_target == null) return null
-    if (currency) return formatCurrency(_target, currency, loc)
-    return `${_target.toLocaleString(loc)}${unit}`
-  }, [_target, currency, loc, unit])
+    if (currency) return formatCurrency(_target, currency, activeLocale)
+    return `${_target.toLocaleString(loc)}${resolvedUnit}`
+  }, [_target, currency, activeLocale, loc, resolvedUnit])
 
-  // ── Trend badge text ──────────────────────────────────────────────────────
-  // Uses `t.vsPrev` from the active locale pack so the badge text is translated.
   const trendBadgeText = useMemo(() => {
     if (isTrendValueBinding) return (trendValue as string).trim()
-    if (trendLabel) return `${trendIcon} ${Math.abs(_trendValue)} ${trendLabel}`
-    if (_trendValue !== 0) return `${trendIcon} ${Math.abs(_trendValue)}% ${t.vsPrev}`
-    if (direction !== 'neutral') return trendIcon
-    return `${trendIcon}`
-  }, [isTrendValueBinding, trendValue, trendLabel, trendIcon, _trendValue, t.vsPrev, direction])
+    if (resolvedTrendLabel) return `${trendIcon} ${Math.abs(_trendValue)} ${resolvedTrendLabel}`
+    if (_trendValue !== 0) return `${trendIcon} ${Math.abs(_trendValue)}% ${t('vsPrev')}`
+    return trendIcon
+  }, [isTrendValueBinding, trendValue, resolvedTrendLabel, trendIcon, _trendValue, t, direction])
 
-  // ── Sparkline ─────────────────────────────────────────────────────────────
+  // ── Sparkline ──────────────────────────────────────────────────────────────
   const sparkPath = useMemo(() => {
     if (!sparkData || sparkData.length < 2) return null
-    const vals  = sparkData.map((d) => d.value)
-    const min   = Math.min(...vals)
-    const max   = Math.max(...vals)
-    const range = max - min || 1
-    const w     = s.width - s.padding * 2
-    const h     = 32
-    return vals
-      .map((v, i) => {
-        const x = (i / (vals.length - 1)) * w
-        const y = h - ((v - min) / range) * h
-        return `${x},${y}`
-      })
-      .join(' ')
+    const vals = sparkData.map((d) => d.value)
+    const min = Math.min(...vals), max = Math.max(...vals), range = max - min || 1
+    const w = s.width - s.padding * 2, h = 32
+    return vals.map((v, i) => `${(i / (vals.length - 1)) * w},${h - ((v - min) / range) * h}`).join(' ')
   }, [sparkData, s])
 
-  const showTrendBadge =
-    _trendValue !== 0 || trend !== 'auto' || isTrendValueBinding || !!trendLabel
+  const showTrendBadge = _trendValue !== 0 || trend !== 'auto' || isTrendValueBinding || !!resolvedTrendLabel
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Render ─────────────────────────────────────────────────────────────────
   return (
-    <div
-      dir={isRtl ? 'rtl' : 'ltr'}
-      style={{
-        width:        s.width,
-        padding:      s.padding,
-        background:   '#1e2130',
-        border:       `1px solid ${a.border}`,
-        borderRadius: 12,
-        fontFamily:   'sans-serif',
-        boxSizing:    'border-box',
-      }}
-    >
-      {/* ── Top row: icon + trend badge ── */}
-      <div
-        style={{
-          display:        'flex',
-          alignItems:     'center',
-          justifyContent: 'space-between',
-          marginBottom:   10,
-        }}
-      >
-        {/* Icon */}
-        <div
-          style={{
-            width:          s.iconSize + 10,
-            height:         s.iconSize + 10,
-            borderRadius:   8,
-            background:     a.bg,
-            border:         `1px solid ${a.border}`,
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'center',
-            flexShrink:     0,
-          }}
-        >
-          {icon ? (
-            <CardIcon icon={icon} size={s.iconSize} color={a.color} />
-          ) : (
-            <div
-              style={{
-                width:        6,
-                height:       6,
-                borderRadius: '50%',
-                background:   a.color,
-                opacity:      0.5,
-              }}
-            />
-          )}
+    <div dir={isRtl ? 'rtl' : 'ltr'} style={{
+      width: s.width, padding: s.padding, background: '#1e2130',
+      border: `1px solid ${a.border}`, borderRadius: 12,
+      fontFamily: 'sans-serif', boxSizing: 'border-box',
+    }}>
+      {/* Top row */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+        <div style={{
+          width: s.iconSize + 10, height: s.iconSize + 10, borderRadius: 8,
+          background: a.bg, border: `1px solid ${a.border}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+        }}>
+          {icon
+            ? <CardIcon icon={icon} size={s.iconSize} color={a.color} />
+            : <div style={{ width: 6, height: 6, borderRadius: '50%', background: a.color, opacity: 0.5 }} />}
         </div>
-
-        {/* Trend badge — text comes from the active locale pack */}
         {showTrendBadge && (
-          <div
-            style={{
-              display:      'inline-flex',
-              alignItems:   'center',
-              gap:          3,
-              fontSize:     11,
-              fontWeight:   600,
-              color:        isTrendValueBinding ? '#4b5563' : trendColor,
-              background:   isTrendValueBinding ? 'rgba(75,85,99,0.15)' : `${trendColor}22`,
-              border:       `1px solid ${isTrendValueBinding ? '#374151' : `${trendColor}44`}`,
-              borderRadius: 20,
-              padding:      '2px 8px',
-              fontStyle:    isTrendValueBinding ? 'italic' : 'normal',
-              whiteSpace:   'nowrap',
-            }}
-          >
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11, fontWeight: 600,
+            color: isTrendValueBinding ? '#4b5563' : trendColor,
+            background: isTrendValueBinding ? 'rgba(75,85,99,0.15)' : `${trendColor}22`,
+            border: `1px solid ${isTrendValueBinding ? '#374151' : `${trendColor}44`}`,
+            borderRadius: 20, padding: '2px 8px',
+            fontStyle: isTrendValueBinding ? 'italic' : 'normal', whiteSpace: 'nowrap',
+          }}>
             {trendBadgeText}
           </div>
         )}
       </div>
 
-      {/* ── Value ── */}
+      {/* Value */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
-        <span
-          style={{
-            fontSize:   s.valueSize,
-            fontWeight: 700,
-            color:      isValueBinding ? '#4b5563' : '#e5e7eb',
-            lineHeight: 1,
-            fontStyle:  isValueBinding ? 'italic' : 'normal',
-          }}
-        >
-          {displayValue}
-        </span>
-        {unit && !currency && (
-          <span style={{ fontSize: s.labelSize + 1, color: '#6b7280', fontWeight: 500 }}>
-            {unit}
-          </span>
+        <span style={{
+          fontSize: s.valueSize, fontWeight: 700,
+          color: isValueBinding ? '#4b5563' : '#e5e7eb',
+          lineHeight: 1, fontStyle: isValueBinding ? 'italic' : 'normal',
+        }}>{displayValue}</span>
+        {resolvedUnit && !currency && (
+          <span style={{ fontSize: s.labelSize + 1, color: '#6b7280', fontWeight: 500 }}>{resolvedUnit}</span>
         )}
       </div>
 
-      {/* ── Label ── */}
-      <div
-        style={{
-          fontSize:      s.labelSize,
-          color:         '#6b7280',
-          fontWeight:    500,
-          letterSpacing: '0.03em',
-          marginBottom:  progress !== null ? 10 : 0,
-        }}
-      >
-        {label}
-      </div>
+      {/* Label */}
+      <div style={{
+        fontSize: s.labelSize, color: '#6b7280', fontWeight: 500,
+        letterSpacing: '0.03em', marginBottom: progress !== null ? 10 : 0,
+      }}>{resolvedLabel}</div>
 
-      {/* ── Target sub-label ── */}
+      {/* Target */}
       {displayTarget && (
-        <div
-          style={{
-            fontSize:     10,
-            color:        '#6b7280',
-            marginTop:    2,
-            marginBottom: progress !== null ? 8 : 0,
-          }}
-        >
-          {targetLabel}: {displayTarget}
+        <div style={{ fontSize: 10, color: '#6b7280', marginTop: 2, marginBottom: progress !== null ? 8 : 0 }}>
+          {resolvedTargetLabel}: {displayTarget}
         </div>
       )}
 
-      {/* ── Progress bar — uses t.progress and t.of from active locale ── */}
+      {/* Progress bar */}
       {progress !== null && (
         <div style={{ marginBottom: 8 }}>
-          <div
-            style={{
-              display:        'flex',
-              justifyContent: 'space-between',
-              fontSize:       10,
-              color:          '#6b7280',
-              marginBottom:   4,
-            }}
-          >
-            <span>{t.progress}</span>
-            <span>
-              {progress}% {t.of} {displayTarget ?? `${_target?.toLocaleString(loc)}${unit}`}
-            </span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, color: '#6b7280', marginBottom: 4 }}>
+            <span>{t('progress')}</span>
+            <span>{progress}% {t('of')} {displayTarget ?? `${_target?.toLocaleString(loc)}${resolvedUnit}`}</span>
           </div>
-          <div
-            style={{
-              height:       4,
-              background:   '#2a2d3a',
-              borderRadius: 4,
-              overflow:     'hidden',
-            }}
-          >
-            <div
-              style={{
-                width:        `${progress}%`,
-                height:       '100%',
-                background:   a.color,
-                borderRadius: 4,
-                transition:   'width 0.3s',
-              }}
-            />
+          <div style={{ height: 4, background: '#2a2d3a', borderRadius: 4, overflow: 'hidden' }}>
+            <div style={{ width: `${progress}%`, height: '100%', background: a.color, borderRadius: 4, transition: 'width 0.3s' }} />
           </div>
         </div>
       )}
 
-      {/* ── Sparkline ── */}
+      {/* Sparkline */}
       {sparkPath && (
-        <svg
-          width={s.width - s.padding * 2}
-          height={32}
-          style={{ display: 'block', marginTop: 4 }}
-        >
-          <polyline
-            points={sparkPath}
-            fill="none"
-            stroke={a.color}
-            strokeWidth={1.5}
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            opacity={0.8}
-          />
+        <svg width={s.width - s.padding * 2} height={32} style={{ display: 'block', marginTop: 4 }}>
+          <polyline points={sparkPath} fill="none" stroke={a.color} strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" opacity={0.8} />
         </svg>
       )}
+
+      {/* Language selector — uses switchLang from useI18n */}
+      <LanguageSelector langs={langs} active={activeLocale} color={a.color} onChange={switchLang} />
     </div>
   )
 }
