@@ -41,8 +41,6 @@ export function CanvasItem({ node, loader }: any) {
     return meta?.actions?.find((a: any) => a.trigger === trigger) ?? null
   }
 
-  const iconClickAction = getAction('iconClick')
-
   function executeAction(action: any) {
     if (!action) return
     switch (action.type) {
@@ -63,60 +61,49 @@ export function CanvasItem({ node, loader }: any) {
   return (
     <div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       style={{
-        position:  'absolute',
-        left:      node.x,
-        top:       node.y,
-        opacity:   isDragging ? 0.4 : 1,
-        outline:   isSelected ? '2px solid #6366f1' : '2px solid transparent',
+        position:      'absolute',
+        left:          node.x,
+        top:           node.y,
+        opacity:       isDragging ? 0.4 : 1,
+        outline:       isSelected ? '2px solid #6366f1' : '2px solid transparent',
         outlineOffset: 3,
         borderRadius:  4,
-        cursor:    'grab',
-        userSelect: 'none',
+        width:         node.props?.width  ?? 'max-content',
+        height:        node.props?.height ?? 'auto',
+        overflow:      'hidden',
+      }}
+      onClick={(e) => {
+        e.stopPropagation()
+        select(node.id)
       }}
     >
-      {/* Component — click to select; pass props straight through.
-          Binding strings like "{{activeProjects}}" reach StatCard as-is,
-          and StatCard's isUnresolvedBinding() guard renders them as
-          dimmed italic placeholders at design time. */}
+      {/* Drag handle — only this area moves the canvas node */}
       <div
-        onPointerDown={(e) => e.stopPropagation()}
-        onClick={(e) => {
-          e.stopPropagation()
-          select(node.id)
+        {...listeners}
+        {...attributes}
+        style={{
+          position:    'absolute',
+          top:         -18,
+          left:        0,
+          height:      18,
+          width:       '100%',
+          cursor:      'grab',
+          background:  isSelected ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.04)',
+          borderRadius: '4px 4px 0 0',
+          display:     'flex',
+          alignItems:  'center',
+          paddingLeft: 8,
+          fontSize:    10,
+          color:       '#6b7280',
+          userSelect:  'none',
         }}
       >
-        <Comp {...node.props} />
+        ⠿ {node.type}
       </div>
 
-      {/* Canvas icon */}
-      {meta?.ui?.canvasIcon && (
-        <div
-          style={{
-            marginTop:     4,
-            textAlign:     'center',
-            pointerEvents: iconClickAction ? 'auto' : 'none',
-            cursor:        iconClickAction ? 'pointer' : 'default',
-          }}
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={(e) => {
-            e.stopPropagation()
-            if (!iconClickAction) return
-            executeAction(iconClickAction)
-          }}
-        >
-          <img
-            src={meta.ui.canvasIcon}
-            alt="icon"
-            style={{ width: 20, height: 20, opacity: 0.5 }}
-            onError={(e) => {
-              ;(e.currentTarget as HTMLImageElement).style.display = 'none'
-            }}
-          />
-        </div>
-      )}
+      {/* Component renders freely — pointer events untouched */}
+      <Comp {...node.props} nodeId={node.id} />
     </div>
   )
 }

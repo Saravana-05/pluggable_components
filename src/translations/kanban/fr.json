@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "Tableau Kanban",
+  "boardSubtitle":"Faites glisser les tâches entre les colonnes",
+  "filterHint":   "Cliquez sur un membre pour filtrer",
+  "noTasks":      "Aucune tâche",
+  "colBacklog":   "Backlog",
+  "colTodo":      "À faire",
+  "colInProgress":"En cours",
+  "colReview":    "En révision",
+  "colDone":      "Terminé"
+}

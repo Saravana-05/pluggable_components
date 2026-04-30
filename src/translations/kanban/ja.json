@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "カンバンボード",
+  "boardSubtitle":"タスクをドラッグしてステータスを更新",
+  "filterHint":   "メンバーをクリックしてフィルター",
+  "noTasks":      "タスクなし",
+  "colBacklog":   "バックログ",
+  "colTodo":      "未着手",
+  "colInProgress":"進行中",
+  "colReview":    "レビュー中",
+  "colDone":      "完了"
+}

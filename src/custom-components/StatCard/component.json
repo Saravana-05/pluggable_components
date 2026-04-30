@@ -4,6 +4,14 @@
     "type": "local",
     "entry": "./StatCard.tsx",
     "enabled": true,
+    "multiLang": {
+  "module": "statcard",
+  "propMap": {
+    "labelKey":       "label",
+    "trendLabelKey":  "trendLabel",
+    "targetLabelKey": "targetLabel"
+  }
+},
     "ui": {
         "canvasIcon": "./stat-canvas-icon.svg"
     },
@@ -13,7 +21,7 @@
             "label": "Stat Card",
             "thumbnail": "📊",
             "defaultProps": {
-                "label": "Metric Name",
+                "labelKey": "metricName",
                 "value": 0,
                 "unit": "",
                 "trend": "auto",
@@ -42,12 +50,12 @@
             "defaultProps": {
                 "cards": [
                     {
-                        "label": "Active Projects",
+                        "labelKey": "activeProjects",
                         "value": "{{activeProjects}}",
                         "unit": "",
                         "trend": "auto",
                         "trendValue": "{{activeProjectsTrend}}",
-                        "trendLabel": "new",
+                        "trendLabelKey": "new",
                         "positiveIsGood": true,
                         "target": null,
                         "accentColor": "amber",
@@ -58,12 +66,12 @@
                         "currency": null
                     },
                     {
-                        "label": "On Track",
+                        "labelKey": "onTrack",
                         "value": "{{onTrackPct}}",
                         "unit": "%",
                         "trend": "auto",
                         "trendValue": "{{onTrackTrend}}",
-                        "trendLabel": "%",
+                        "trendLabelKey": "vsPrev",
                         "positiveIsGood": true,
                         "target": null,
                         "accentColor": "green",
@@ -74,12 +82,12 @@
                         "currency": null
                     },
                     {
-                        "label": "Delayed Projects",
+                        "labelKey": "delayedProjects",
                         "value": "{{delayedProjects}}",
                         "unit": "",
                         "trend": "auto",
                         "trendValue": "{{delayedTrend}}",
-                        "trendLabel": "more",
+                        "trendLabelKey": "more",
                         "positiveIsGood": false,
                         "target": null,
                         "accentColor": "red",
@@ -90,15 +98,15 @@
                         "currency": null
                     },
                     {
-                        "label": "Revenue vs Forecast",
+                        "labelKey": "revenueVsForecast",
                         "value": "{{revenueForecast}}",
                         "unit": "",
                         "trend": "neutral",
                         "trendValue": "{{revenueTrend}}",
-                        "trendLabel": "%",
+                        "trendLabelKey": "vsPrev",
                         "positiveIsGood": true,
                         "target": "{{forecastTarget}}",
-                        "targetLabel": "Forecast",
+                        "targetLabelKey": "forecast",
                         "accentColor": "amber",
                         "size": "md",
                         "locale": "en",
@@ -111,12 +119,12 @@
                         }
                     },
                     {
-                        "label": "Cash Flow",
+                        "labelKey": "cashFlow",
                         "value": "{{cashFlow}}",
                         "unit": "",
                         "trend": "auto",
                         "trendValue": "{{cashFlowTrend}}",
-                        "trendLabel": "Healthy",
+                        "trendLabelKey": "healthy",
                         "positiveIsGood": true,
                         "target": null,
                         "accentColor": "green",
@@ -127,12 +135,12 @@
                         "currency": null
                     },
                     {
-                        "label": "Resource Utilization",
+                        "labelKey": "resourceUtilization",
                         "value": "{{resourceUtilization}}",
                         "unit": "%",
                         "trend": "auto",
                         "trendValue": "{{resourceTrend}}",
-                        "trendLabel": "%",
+                        "trendLabelKey": "vsPrev",
                         "positiveIsGood": true,
                         "target": null,
                         "accentColor": "cyan",
@@ -150,21 +158,22 @@
         "schema": {
             "type": "object",
             "properties": {
+                "labelKey": {
+                    "type": "string",
+                    "description": "i18n translation key for the metric name. Renders in all active languages via MultiLangLabel."
+                },
                 "label": {
                     "type": "string",
-                    "description": "Metric name shown above the value"
+                    "description": "Plain string fallback for metric name. Used only when labelKey is not set."
                 },
                 "value": {
-                    "type": [
-                        "number",
-                        "string"
-                    ],
+                    "type": ["number", "string"],
                     "description": "Primary numeric value. Accepts a number or a canvas binding like {{myVariable}}",
                     "x-binding": true
                 },
                 "unit": {
                     "type": "string",
-                    "description": "Unit suffix e.g. %, ms, $, K"
+                    "description": "Unit suffix e.g. %, ms, K"
                 },
                 "icon": {
                     "type": "string",
@@ -187,30 +196,17 @@
                     ]
                 },
                 "currency": {
-                    "type": [
-                        "object",
-                        "null"
-                    ],
-                    "description": "Currency formatting config. Set null to disable. When set, formats the value as currency.",
+                    "type": ["object", "null"],
+                    "description": "Currency formatting config. Set null to disable.",
                     "properties": {
                         "symbol": {
                             "type": "string",
                             "description": "Currency symbol e.g. $, €, £, ₹, ¥",
-                            "examples": [
-                                "$",
-                                "€",
-                                "£",
-                                "₹",
-                                "¥",
-                                "₩"
-                            ]
+                            "examples": ["$", "€", "£", "₹", "¥", "₩"]
                         },
                         "position": {
                             "type": "string",
-                            "enum": [
-                                "prefix",
-                                "suffix"
-                            ],
+                            "enum": ["prefix", "suffix"],
                             "description": "Whether symbol appears before or after the value"
                         },
                         "compact": {
@@ -221,45 +217,33 @@
                             "type": "integer",
                             "minimum": 0,
                             "maximum": 4,
-                            "description": "Number of decimal places to show (default 0 for compact, 2 otherwise)"
+                            "description": "Number of decimal places to show"
                         },
                         "code": {
                             "type": "string",
-                            "description": "ISO 4217 currency code for locale-aware formatting e.g. USD, EUR, INR",
-                            "examples": [
-                                "USD",
-                                "EUR",
-                                "GBP",
-                                "INR",
-                                "JPY"
-                            ]
+                            "description": "ISO 4217 currency code e.g. USD, EUR, INR",
+                            "examples": ["USD", "EUR", "GBP", "INR", "JPY"]
                         }
                     },
-                    "required": [
-                        "symbol",
-                        "position"
-                    ]
+                    "required": ["symbol", "position"]
+                },
+                "trendLabelKey": {
+                    "type": "string",
+                    "description": "i18n translation key for the trend badge label. Renders in all active languages.",
+                    "examples": ["new", "more", "healthy", "vsPrev"]
                 },
                 "trendLabel": {
                     "type": "string",
-                    "description": "Custom label shown in the trend badge (e.g. 'new', 'more', 'Healthy'). Overrides the default unit/percentage."
+                    "description": "Plain string fallback for trend badge label. Used only when trendLabelKey is not set."
                 },
                 "trendValue": {
-                    "type": [
-                        "number",
-                        "string"
-                    ],
-                    "description": "% change vs previous period (negative = down). Accepts a number or a canvas binding like {{myTrendVar}}",
+                    "type": ["number", "string"],
+                    "description": "% change vs previous period. Accepts a number or a canvas binding like {{myTrendVar}}",
                     "x-binding": true
                 },
                 "trend": {
                     "type": "string",
-                    "enum": [
-                        "auto",
-                        "up",
-                        "down",
-                        "neutral"
-                    ],
+                    "enum": ["auto", "up", "down", "neutral"],
                     "description": "auto derives direction from trendValue sign"
                 },
                 "positiveIsGood": {
@@ -267,17 +251,18 @@
                     "description": "When false, up trend is red (for error rates, latency etc.)"
                 },
                 "target": {
-                    "type": [
-                        "number",
-                        "string",
-                        "null"
-                    ],
+                    "type": ["number", "string", "null"],
                     "description": "Goal value — shows a progress bar when set. Accepts a number or a canvas binding like {{myTarget}}",
                     "x-binding": true
                 },
+                "targetLabelKey": {
+                    "type": "string",
+                    "description": "i18n translation key for the target label. Renders in all active languages.",
+                    "examples": ["forecast", "goal", "budget", "target"]
+                },
                 "targetLabel": {
                     "type": "string",
-                    "description": "Label shown next to the target/forecast value (e.g. 'Forecast', 'Goal', 'Budget')"
+                    "description": "Plain string fallback for target label. Used only when targetLabelKey is not set."
                 },
                 "sparkData": {
                     "type": "array",
@@ -285,63 +270,46 @@
                     "items": {
                         "type": "object",
                         "properties": {
-                            "value": {
-                                "type": "number"
-                            }
+                            "value": { "type": "number" }
                         }
                     }
                 },
                 "accentColor": {
                     "type": "string",
-                    "enum": [
-                        "indigo",
-                        "green",
-                        "red",
-                        "amber",
-                        "cyan"
-                    ]
+                    "enum": ["indigo", "green", "red", "amber", "cyan"]
                 },
                 "size": {
                     "type": "string",
-                    "enum": [
-                        "sm",
-                        "md",
-                        "lg"
-                    ]
+                    "enum": ["sm", "md", "lg"]
                 },
                 "locale": {
-                    "type": "string",
-                    "enum": [
-                        "en",
-                        "fr",
-                        "de",
-                        "es",
-                        "ja",
-                        "ar",
-                        "zh",
-                        "hi",
-                        "ta"
-                    ]
-                },
+  "type": "array",
+  "description": "Active display languages in order",
+  "items": {
+    "type": "string",
+    "enum": ["en", "ta", "hi", "ar", "fr", "de", "es", "zh", "ja"]
+  },
+  "default": ["en"]
+},
                 "cards": {
                     "type": "array",
                     "description": "Array of card configurations for multi-card layout",
                     "items": {
                         "type": "object",
                         "properties": {
+                            "labelKey": {
+                                "type": "string",
+                                "description": "i18n translation key for the metric name"
+                            },
                             "label": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Plain string fallback for metric name"
                             },
                             "value": {
-                                "type": [
-                                    "number",
-                                    "string"
-                                ],
+                                "type": ["number", "string"],
                                 "x-binding": true
                             },
-                            "unit": {
-                                "type": "string"
-                            },
+                            "unit": { "type": "string" },
                             "icon": {
                                 "type": "string",
                                 "enum": [
@@ -362,125 +330,51 @@
                                 ]
                             },
                             "currency": {
-                                "type": [
-                                    "object",
-                                    "null"
-                                ],
+                                "type": ["object", "null"],
                                 "properties": {
-                                    "symbol": {
-                                        "type": "string"
-                                    },
+                                    "symbol": { "type": "string" },
                                     "position": {
                                         "type": "string",
-                                        "enum": [
-                                            "prefix",
-                                            "suffix"
-                                        ]
+                                        "enum": ["prefix", "suffix"]
                                     },
-                                    "compact": {
-                                        "type": "boolean"
-                                    },
-                                    "decimalPlaces": {
-                                        "type": "integer"
-                                    },
-                                    "code": {
-                                        "type": "string"
-                                    }
+                                    "compact": { "type": "boolean" },
+                                    "decimalPlaces": { "type": "integer" },
+                                    "code": { "type": "string" }
                                 },
-                                "required": [
-                                    "symbol",
-                                    "position"
-                                ]
+                                "required": ["symbol", "position"]
                             },
+                            "trendLabelKey": { "type": "string" },
+                            "trendLabel": { "type": "string" },
                             "trendValue": {
-                                "type": [
-                                    "number",
-                                    "string"
-                                ],
+                                "type": ["number", "string"],
                                 "x-binding": true
-                            },
-                            "trendLabel": {
-                                "type": "string"
                             },
                             "trend": {
                                 "type": "string",
-                                "enum": [
-                                    "auto",
-                                    "up",
-                                    "down",
-                                    "neutral"
-                                ]
+                                "enum": ["auto", "up", "down", "neutral"]
                             },
-                            "positiveIsGood": {
-                                "type": "boolean"
-                            },
+                            "positiveIsGood": { "type": "boolean" },
                             "target": {
-                                "type": [
-                                    "number",
-                                    "string",
-                                    "null"
-                                ],
+                                "type": ["number", "string", "null"],
                                 "x-binding": true
                             },
-                            "targetLabel": {
-                                "type": "string"
-                            },
+                            "targetLabelKey": { "type": "string" },
+                            "targetLabel": { "type": "string" },
                             "accentColor": {
                                 "type": "string",
-                                "enum": [
-                                    "indigo",
-                                    "green",
-                                    "red",
-                                    "amber",
-                                    "cyan"
-                                ]
+                                "enum": ["indigo", "green", "red", "amber", "cyan"]
                             },
                             "size": {
                                 "type": "string",
-                                "enum": [
-                                    "sm",
-                                    "md",
-                                    "lg"
-                                ]
+                                "enum": ["sm", "md", "lg"]
                             },
-                            "locale": {
-                                "type": "string"
-                            },
-                            "sparkData": {
-                                "type": "array"
-                            }
-                        }
-                    }
-                },
-                "labels": {
-                    "type": "object",
-                    "description": "Override any displayed label string",
-                    "properties": {
-                        "trend_up": {
-                            "type": "string"
-                        },
-                        "trend_down": {
-                            "type": "string"
-                        },
-                        "trend_neutral": {
-                            "type": "string"
-                        },
-                        "vs_period": {
-                            "type": "string"
-                        },
-                        "target": {
-                            "type": "string"
-                        },
-                        "current": {
-                            "type": "string"
+                            "locale": { "type": "string" },
+                            "sparkData": { "type": "array" }
                         }
                     }
                 }
             },
-            "required": [
-                "label",
-                "value"
-            ]
+            "required": ["labelKey"]
         }
     },
     "events": [

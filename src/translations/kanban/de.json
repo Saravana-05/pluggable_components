@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "Kanban-Board",
+  "boardSubtitle":"Aufgaben zwischen Spalten ziehen",
+  "filterHint":   "Mitglied anklicken zum Filtern",
+  "noTasks":      "Keine Aufgaben",
+  "colBacklog":   "Backlog",
+  "colTodo":      "Zu erledigen",
+  "colInProgress":"In Bearbeitung",
+  "colReview":    "In Überprüfung",
+  "colDone":      "Erledigt"
+}

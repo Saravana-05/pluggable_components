@@ -1,0 +1,284 @@
+{
+  "name": "GanttChart",
+  "category": "Charts",
+  "type": "local",
+  "entry": "./GanttChart.tsx",
+  "enabled": true,
+  "ui": {
+    "canvasIcon": "./gantt-canvas-icon.svg"
+  },
+  "presets": [
+    {
+      "id": "gantt-default",
+      "label": "Gantt Chart",
+      "thumbnail": "\ud83d\udccb",
+      "defaultProps": {
+        "theme": "light",
+        "defaultZoom": "month",
+        "showStats": true,
+        "showToolbar": true,
+        "showDependencies": true,
+        "projects": [
+          {
+            "id": 1,
+            "name": "Website Redesign",
+            "status": "in-progress",
+            "start_date": "2025-01-01",
+            "end_date": "2025-03-31"
+          },
+          {
+            "id": 2,
+            "name": "Mobile App",
+            "status": "pending",
+            "start_date": "2025-02-01",
+            "end_date": "2025-06-30"
+          }
+        ],
+        "tasks": [
+          {
+            "id": 101,
+            "title": "Design mockups",
+            "project_id": 1,
+            "status": "done",
+            "start_date": "2025-01-01",
+            "end_date": "2025-01-20"
+          },
+          {
+            "id": 102,
+            "title": "Frontend build",
+            "project_id": 1,
+            "status": "in-progress",
+            "start_date": "2025-01-21",
+            "end_date": "2025-02-28"
+          },
+          {
+            "id": 103,
+            "title": "QA & Testing",
+            "project_id": 1,
+            "status": "pending",
+            "start_date": "2025-03-01",
+            "end_date": "2025-03-31"
+          },
+          {
+            "id": 201,
+            "title": "Requirements",
+            "project_id": 2,
+            "status": "done",
+            "start_date": "2025-02-01",
+            "end_date": "2025-02-15"
+          },
+          {
+            "id": 202,
+            "title": "Development",
+            "project_id": 2,
+            "status": "in-progress",
+            "start_date": "2025-02-16",
+            "end_date": "2025-05-31"
+          },
+          {
+            "id": 203,
+            "title": "Launch",
+            "project_id": 2,
+            "status": "pending",
+            "start_date": "2025-06-01",
+            "end_date": "2025-06-30"
+          }
+        ],
+        "links": [
+          {
+            "id": "101-102",
+            "source": 101,
+            "target": 102,
+            "type": 0
+          },
+          {
+            "id": "102-103",
+            "source": 102,
+            "target": 103,
+            "type": 0
+          },
+          {
+            "id": "201-202",
+            "source": 201,
+            "target": 202,
+            "type": 0
+          }
+        ],
+        "i18n": {
+          "en": {
+            "title": "Project Timeline",
+            "subtitle": "Click a project to zoom in \u00b7 Drag tasks to reschedule",
+            "projects": "Projects",
+            "tasks": "Tasks",
+            "done": "Done",
+            "overdue": "Overdue",
+            "dependencies": "Dependencies",
+            "week": "Week",
+            "month": "Month",
+            "quarter": "Quarter",
+            "refresh": "Refresh",
+            "noData": "No projects or tasks found.",
+            "back": "Back to",
+            "view": "view",
+            "noLink": "Cannot link project summary rows",
+            "circular": "Circular dependency \u2014 link not saved"
+          }
+        },
+        "width": 860,
+        "height": 500
+      }
+    },
+    {
+      "id": "gantt-multilang",
+      "label": "Gantt Chart (EN + TA)",
+      "thumbnail": "\ud83d\udccb",
+      "defaultProps": {
+        "theme": "light",
+        "defaultZoom": "month",
+        "showStats": true,
+        "showToolbar": true,
+        "showDependencies": true,
+        "projects": [
+          {
+            "id": 1,
+            "name": "Website Redesign",
+            "status": "in-progress",
+            "start_date": "2025-01-01",
+            "end_date": "2025-03-31"
+          }
+        ],
+        "tasks": [
+          {
+            "id": 101,
+            "title": "Design",
+            "project_id": 1,
+            "status": "done",
+            "start_date": "2025-01-01",
+            "end_date": "2025-01-20"
+          },
+          {
+            "id": 102,
+            "title": "Build",
+            "project_id": 1,
+            "status": "in-progress",
+            "start_date": "2025-01-21",
+            "end_date": "2025-03-31"
+          }
+        ],
+        "links": [],
+        "i18n": {
+          "en": {
+            "title": "Project Timeline",
+            "subtitle": "Click a project to zoom in \u00b7 Drag tasks to reschedule",
+            "projects": "Projects",
+            "tasks": "Tasks",
+            "done": "Done",
+            "overdue": "Overdue",
+            "dependencies": "Dependencies",
+            "week": "Week",
+            "month": "Month",
+            "quarter": "Quarter",
+            "noData": "No projects or tasks found.",
+            "back": "Back to",
+            "view": "view",
+            "noLink": "Cannot link project summary rows",
+            "circular": "Circular dependency \u2014 link not saved"
+          },
+          "ta": {
+            "title": "\u0ba4\u0bbf\u0b9f\u0bcd\u0b9f \u0b95\u0bbe\u0bb2\u0bb5\u0bb0\u0bbf\u0b9a\u0bc8",
+            "subtitle": "\u0ba4\u0bbf\u0b9f\u0bcd\u0b9f\u0ba4\u0bcd\u0ba4\u0bc8 \u0b95\u0bbf\u0bb3\u0bbf\u0b95\u0bcd \u0b9a\u0bc6\u0baf\u0bcd\u0baf\u0bc1\u0b99\u0bcd\u0b95\u0bb3\u0bcd \u00b7 \u0baa\u0ba3\u0bbf\u0b95\u0bb3\u0bc8 \u0b87\u0bb4\u0bc1\u0b95\u0bcd\u0b95\u0bb5\u0bc1\u0bae\u0bcd",
+            "projects": "\u0ba4\u0bbf\u0b9f\u0bcd\u0b9f\u0b99\u0bcd\u0b95\u0bb3\u0bcd",
+            "tasks": "\u0baa\u0ba3\u0bbf\u0b95\u0bb3\u0bcd",
+            "done": "\u0bae\u0bc1\u0b9f\u0bbf\u0ba8\u0bcd\u0ba4\u0ba4\u0bc1",
+            "overdue": "\u0ba4\u0bbe\u0bae\u0ba4\u0bae\u0bcd",
+            "dependencies": "\u0b9a\u0bbe\u0bb0\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bcd",
+            "week": "\u0bb5\u0bbe\u0bb0\u0bae\u0bcd",
+            "month": "\u0bae\u0bbe\u0ba4\u0bae\u0bcd",
+            "quarter": "\u0b95\u0bbe\u0bb2\u0bbe\u0ba3\u0bcd\u0b9f\u0bc1",
+            "noData": "\u0ba4\u0bb0\u0bb5\u0bc1 \u0b87\u0bb2\u0bcd\u0bb2\u0bc8.",
+            "back": "\u0ba4\u0bbf\u0bb0\u0bc1\u0bae\u0bcd\u0baa\u0bc1",
+            "view": "\u0baa\u0bbe\u0bb0\u0bcd\u0bb5\u0bc8",
+            "noLink": "\u0b9a\u0bc1\u0bb0\u0bc1\u0b95\u0bcd\u0b95 \u0bb5\u0bb0\u0bbf\u0b9a\u0bc8\u0b95\u0bb3\u0bc8 \u0b87\u0ba3\u0bc8\u0b95\u0bcd\u0b95 \u0bae\u0bc1\u0b9f\u0bbf\u0baf\u0bbe\u0ba4\u0bc1",
+            "circular": "\u0b9a\u0bc1\u0bb4\u0bb2\u0bcd \u0b9a\u0bbe\u0bb0\u0bcd\u0baa\u0bc1 \u0b95\u0ba3\u0bcd\u0b9f\u0bb1\u0bbf\u0baf\u0baa\u0bcd\u0baa\u0b9f\u0bcd\u0b9f\u0ba4\u0bc1"
+          }
+        },
+        "width": 860,
+        "height": 500
+      }
+    }
+  ],
+  "settings": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ]
+        },
+        "defaultZoom": {
+          "type": "string",
+          "enum": [
+            "week",
+            "month",
+            "quarter"
+          ]
+        },
+        "showStats": {
+          "type": "boolean"
+        },
+        "showToolbar": {
+          "type": "boolean"
+        },
+        "showDependencies": {
+          "type": "boolean"
+        },
+        "activeLocale": {
+          "type": "string"
+        },
+        "i18n": {
+          "type": "object",
+          "description": "Multilingual labels. Keys = BCP-47 codes.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "width": {
+          "type": "number",
+          "default": 860
+        },
+        "height": {
+          "type": "number",
+          "default": 500
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "name": "onTaskUpdate",
+      "label": "On Task Update"
+    },
+    {
+      "name": "onTaskClick",
+      "label": "On Task Click"
+    },
+    {
+      "name": "onLinkAdd",
+      "label": "On Link Added"
+    },
+    {
+      "name": "onLinkRemove",
+      "label": "On Link Removed"
+    },
+    {
+      "name": "onLanguageChange",
+      "label": "On Language Change"
+    }
+  ]
+}

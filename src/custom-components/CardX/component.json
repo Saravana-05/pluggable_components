@@ -1,124 +1,132 @@
 {
-    "name": "CardX",
-    "category": "Cards",
-    "type": "local",
-    "entry": "./index.tsx",
-    "enabled": true,
-    "ui": {
-        "canvasIcon": "./card-canvas-icon.svg"
+  "name": "CardX",
+  "category": "Cards",
+  "type": "local",
+  "entry": "./index.tsx",
+  "enabled": true,
+  "multiLang": {
+    "module": "cardx",
+    "propMap": {
+      "titleKey":       "title",
+      "descriptionKey": "description",
+      "badgeKey":       "badge"
+    }
+  },
+  "ui": {
+    "canvasIcon": "./card-canvas-icon.svg"
+  },
+  "presets": [
+    {
+      "id": "card-full",
+      "label": "Full Card",
+      "thumbnail": "🃏",
+      "defaultProps": {
+        "titleKey":       "featureCard",
+        "descriptionKey": "featureDesc",
+        "badgeKey":       "new",
+        "imageUrl":       "https://picsum.photos/320/120",
+        "variant":        "elevated",
+        "size":           "lg",
+        "badgeColor":     "purple",
+        "visibleFields":  ["image", "badge", "description"]
+      },
+      "defaultActions": {
+        "iconClick":   { "type": "redirect", "url": "/landing", "target": "_self" },
+        "buttonClick": { "type": "redirect", "url": "/landing", "target": "_self" }
+      }
     },
-    "presets": [
-        {
-            "id": "card-full",
-            "label": "Full Card",
-            "thumbnail": "🃏",
-            "defaultProps": {
-                "title": "Feature Card",
-                "description": "This card shows full info with image and badge.",
-                "imageUrl": "https://picsum.photos/320/120",
-                "variant": "elevated",
-                "size": "lg",
-                "badge": "New",
-                "badgeColor": "purple",
-                "visibleFields": ["image", "badge", "description"]
-            },
-            "defaultActions": {
-                "iconClick": { "type": "redirect", "url": "/landing", "target": "_self" },
-                "buttonClick": { "type": "redirect", "url": "/landing", "target": "_self" }
-            }
-        },
-        {
-            "id": "card-minimal",
-            "label": "Minimal Card",
-            "thumbnail": "🪧",
-            "defaultProps": {
-                "title": "Quick Info",
-                "description": "Just title and description, nothing else.",
-                "imageUrl": "",
-                "variant": "bordered",
-                "size": "sm",
-                "badge": "",
-                "badgeColor": "blue",
-                "visibleFields": ["description"]
-            },
-            "defaultActions": {
-                "iconClick": { "type": "redirect", "url": "/info", "target": "_self" },
-                "buttonClick": { "type": "redirect", "url": "/info", "target": "_self" }
-            }
-        },
-        {
-            "id": "card-alert",
-            "label": "Alert Card",
-            "thumbnail": "🚨",
-            "defaultProps": {
-                "title": "Warning",
-                "description": "Critical notice for urgent situations.",
-                "imageUrl": "",
-                "variant": "bordered",
-                "size": "md",
-                "badge": "Urgent",
-                "badgeColor": "red",
-                "visibleFields": ["badge", "description"]
-            },
-            "defaultActions": {
-                "iconClick": { "type": "redirect", "url": "/alerts", "target": "_self" },
-                "buttonClick": { "type": "redirect", "url": "/alerts", "target": "_self" }
-            }
-        },
-        {
-            "id": "card-image-only",
-            "label": "Image Card",
-            "thumbnail": "🖼️",
-            "defaultProps": {
-                "title": "Visual Card",
-                "description": "",
-                "imageUrl": "https://picsum.photos/260/120?grayscale",
-                "variant": "default",
-                "size": "md",
-                "badge": "Photo",
-                "badgeColor": "green",
-                "visibleFields": ["image", "badge"]
-            },
-            "defaultActions": {
-                "iconClick": { "type": "redirect", "url": "/gallery", "target": "_self" },
-                "buttonClick": { "type": "redirect", "url": "/gallery", "target": "_self" }
-            }
-        }
-    ],
-    "settings": {
-        "schema": {
-            "type": "object",
-            "properties": {
-                "title": { "type": "string" },
-                "description": { "type": "string" },
-                "imageUrl": { "type": "string" },
-                "variant": {
-                    "type": "string",
-                    "enum": ["default", "bordered", "elevated"]
-                },
-                "size": {
-                    "type": "string",
-                    "enum": ["sm", "md", "lg"]
-                },
-                "badge": { "type": "string" },
-                "badgeColor": {
-                    "type": "string",
-                    "enum": ["purple", "green", "red", "blue"]
-                },
-                "visibleFields": {
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": ["image", "badge", "description"]
-                    }
-                }
-            }
-        }
+    {
+      "id": "card-minimal",
+      "label": "Minimal Card",
+      "thumbnail": "🪧",
+      "defaultProps": {
+        "titleKey":       "quickInfo",
+        "descriptionKey": "quickInfoDesc",
+        "badgeKey":       "",
+        "imageUrl":       "",
+        "variant":        "bordered",
+        "size":           "sm",
+        "badgeColor":     "blue",
+        "visibleFields":  ["description"]
+      },
+      "defaultActions": {
+        "iconClick":   { "type": "redirect", "url": "/info", "target": "_self" },
+        "buttonClick": { "type": "redirect", "url": "/info", "target": "_self" }
+      }
     },
-    "events": [
-        {
-            "name": "onClick",
-            "label": "On Click"
+    {
+      "id": "card-alert",
+      "label": "Alert Card",
+      "thumbnail": "🚨",
+      "defaultProps": {
+        "titleKey":       "warning",
+        "descriptionKey": "warningDesc",
+        "badgeKey":       "urgent",
+        "imageUrl":       "",
+        "variant":        "bordered",
+        "size":           "md",
+        "badgeColor":     "red",
+        "visibleFields":  ["badge", "description"]
+      },
+      "defaultActions": {
+        "iconClick":   { "type": "redirect", "url": "/alerts", "target": "_self" },
+        "buttonClick": { "type": "redirect", "url": "/alerts", "target": "_self" }
+      }
+    },
+    {
+      "id": "card-image-only",
+      "label": "Image Card",
+      "thumbnail": "🖼️",
+      "defaultProps": {
+        "titleKey":       "visualCard",
+        "descriptionKey": "",
+        "badgeKey":       "photo",
+        "imageUrl":       "https://picsum.photos/260/120?grayscale",
+        "variant":        "default",
+        "size":           "md",
+        "badgeColor":     "green",
+        "visibleFields":  ["image", "badge"]
+      },
+      "defaultActions": {
+        "iconClick":   { "type": "redirect", "url": "/gallery", "target": "_self" },
+        "buttonClick": { "type": "redirect", "url": "/gallery", "target": "_self" }
+      }
+    }
+  ],
+  "settings": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "titleKey":       { "type": "string", "description": "i18n key for card title" },
+        "descriptionKey": { "type": "string", "description": "i18n key for card description" },
+        "badgeKey":       { "type": "string", "description": "i18n key for badge text" },
+        "title":          { "type": "string", "description": "Plain title fallback" },
+        "description":    { "type": "string", "description": "Plain description fallback" },
+        "imageUrl":       { "type": "string" },
+        "variant": {
+          "type": "string",
+          "enum": ["default", "bordered", "elevated"]
+        },
+        "size": {
+          "type": "string",
+          "enum": ["sm", "md", "lg"]
+        },
+        "badge":     { "type": "string" },
+        "badgeColor": {
+          "type": "string",
+          "enum": ["purple", "green", "red", "blue"]
+        },
+        "visibleFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["image", "badge", "description"]
+          }
         }
-    ]
+      }
+    }
+  },
+  "events": [
+    { "name": "onClick", "label": "On Click" }
+  ]
 }

@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap');
+
+/* ── Container ── */
+.lang-selector-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 16px;
+  font-family: 'Outfit', sans-serif;
+}
+
+/* ── Relative anchor ── */
+.lang-selector-anchor {
+  position: relative;
+}
+
+/* ── Trigger button ── */
+.lang-trigger-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2c2418;
+  background: #ffffff;
+  border: 0.5px solid #c8bfb0;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.lang-trigger-btn:hover {
+  border-color: #8b7355;
+  background: #faf8f5;
+}
+
+.lang-trigger-btn.open {
+  border-color: #8b7355;
+  box-shadow: 0 0 0 3px rgba(139, 115, 85, 0.12);
+}
+
+.lang-trigger-icon {
+  font-size: 15px;
+}
+
+.lang-trigger-chevron {
+  font-size: 9px;
+  color: #8b7355;
+  margin-left: 2px;
+  transition: transform 0.2s ease;
+}
+
+.lang-trigger-btn.open .lang-trigger-chevron {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown menu ── */
+.lang-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: #ffffff;
+  border: 0.5px solid #c8bfb0;
+  border-radius: 10px;
+  min-width: 170px;
+  z-index: 100;
+  overflow: hidden;
+  animation: lang-fade-in 0.15s ease;
+}
+
+@keyframes lang-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Each language row ── */
+.lang-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  color: #2c2418;
+  background: #ffffff;
+  border-bottom: 0.5px solid #f0ebe4;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.lang-option:last-child {
+  border-bottom: none;
+}
+
+.lang-option:hover {
+  background: #faf8f5;
+}
+
+.lang-option.selected {
+  background: #f7f3ee;
+}
+
+/* ── Custom checkbox ── */
+.lang-checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #c8bfb0;
+  border-radius: 4px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.lang-option.selected .lang-checkbox {
+  border-color: #8b7355;
+  background: #8b7355;
+}
+
+.lang-checkbox-tick {
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* ── Drag handle ── */
+.lang-drag-handle {
+  cursor: grab;
+  color: #c8bfb0;
+  font-size: 14px;
+  line-height: 1;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.lang-drag-handle:active {
+  cursor: grabbing;
+}
+
+.lang-option.selected:hover .lang-drag-handle {
+  color: #8b7355;
+}
+
+/* ── Drag-over highlight ── */
+.lang-option.drag-over {
+  background: #f0ebe4;
+  border-top: 1.5px solid #8b7355;
+}
+
+/* ── Divider between selected / unselected ── */
+.lang-divider {
+  height: 1px;
+  background: #e8e0d5;
+  margin: 2px 0;
+}

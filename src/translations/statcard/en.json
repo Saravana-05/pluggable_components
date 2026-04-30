@@ -1,0 +1,19 @@
+{
+  "metricName":          "Metric Name",
+  "activeProjects":      "Active Projects",
+  "onTrack":             "On Track",
+  "delayedProjects":     "Delayed Projects",
+  "revenueVsForecast":   "Revenue vs Forecast",
+  "cashFlow":            "Cash Flow",
+  "resourceUtilization": "Resource Utilization",
+  "vsPrev":              "vs prev",
+  "progress":            "Progress",
+  "of":                  "of",
+  "forecast":            "Forecast",
+  "goal":                "Goal",
+  "budget":              "Budget",
+  "target":              "Target",
+  "new":                 "new",
+  "more":                "more",
+  "healthy":             "Healthy"
+}

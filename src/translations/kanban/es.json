@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "Tablero Kanban",
+  "boardSubtitle":"Arrastra tareas entre columnas para actualizar el estado",
+  "filterHint":   "Haz clic en un miembro para filtrar",
+  "noTasks":      "Sin tareas",
+  "colBacklog":   "Pendiente",
+  "colTodo":      "Por hacer",
+  "colInProgress":"En progreso",
+  "colReview":    "En revisión",
+  "colDone":      "Hecho"
+}

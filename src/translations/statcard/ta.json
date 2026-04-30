@@ -1,0 +1,19 @@
+{
+  "metricName":          "அளவீட்டு பெயர்",
+  "activeProjects":      "செயலில் உள்ள திட்டங்கள்",
+  "onTrack":             "சரியான பாதையில்",
+  "delayedProjects":     "தாமதமான திட்டங்கள்",
+  "revenueVsForecast":   "வருவாய் மற்றும் முன்னறிவிப்பு",
+  "cashFlow":            "பண ஓட்டம்",
+  "resourceUtilization": "வள பயன்பாடு",
+  "vsPrev":              "முந்தையதுடன்",
+  "progress":            "முன்னேற்றம்",
+  "of":                  "/",
+  "forecast":            "முன்னறிவிப்பு",
+  "goal":                "இலக்கு",
+  "budget":              "பட்ஜெட்",
+  "target":              "இலக்கு",
+  "new":                 "புதிய",
+  "more":                "அதிகம்",
+  "healthy":             "நலமான"
+}

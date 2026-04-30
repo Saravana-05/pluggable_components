@@ -1,7 +1,8 @@
 // labels/useLabelBus.ts
 import { useState, useEffect, useMemo } from 'react'
 import { LabelBus } from './LabelBus'
-import { LABEL_REGISTRY, SupportedLang, ComponentId } from './registry'
+import { LABEL_REGISTRY } from './registry'
+import type { SupportedLang, ComponentId } from './registry'
 
 export function useLabelBus<T extends ComponentId>(componentId: T) {
   const [lang, setLang] = useState<SupportedLang>(LabelBus.getLang())

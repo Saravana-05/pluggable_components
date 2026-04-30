@@ -1,0 +1,19 @@
+{
+  "metricName":          "指标名称",
+  "activeProjects":      "活跃项目",
+  "onTrack":             "按计划进行",
+  "delayedProjects":     "延迟项目",
+  "revenueVsForecast":   "收入与预测",
+  "cashFlow":            "现金流",
+  "resourceUtilization": "资源利用率",
+  "vsPrev":              "较上期",
+  "progress":            "进度",
+  "of":                  "/",
+  "forecast":            "预测",
+  "goal":                "目标",
+  "budget":              "预算",
+  "target":              "目标值",
+  "new":                 "新增",
+  "more":                "更多",
+  "healthy":             "良好"
+}

@@ -1,0 +1,83 @@
+{
+  "name": "KanbanBoard",
+  "category": "Boards",
+  "type": "local",
+  "entry": "./kanban.tsx",
+  "enabled": true,
+
+  "multiLang": {
+    "module": "kanban",
+    "propMap": {
+      "titleKey":      "title",
+      "subtitleKey":   "subtitle",
+      "filterHintKey": "filterHint",
+      "noTasksKey":    "noTasksText"
+    }
+  },
+
+  "ui": {
+    "canvasIcon": "./kanban-canvas-icon.svg"
+  },
+
+  "presets": [
+    {
+      "id": "kanban-default",
+      "label": "Kanban Board",
+      "thumbnail": "📋",
+      "defaultProps": {
+        "titleKey":      "boardTitle",
+        "subtitleKey":   "boardSubtitle",
+        "filterHintKey": "filterHint",
+        "noTasksKey":    "noTasks",
+        "accentColor":   "indigo",
+        "tasks": [
+          { "id": "1", "title": "Design mockups",   "status": "done",        "priority": "high"   },
+          { "id": "2", "title": "Frontend build",   "status": "in_progress", "priority": "medium" },
+          { "id": "3", "title": "API integration",  "status": "todo",        "priority": "high"   },
+          { "id": "4", "title": "Write unit tests", "status": "backlog",     "priority": "low"    },
+          { "id": "5", "title": "Code review",      "status": "review",      "priority": "medium" },
+          { "id": "6", "title": "Deploy to staging","status": "todo",        "priority": "critical"}
+        ],
+        "workers": [
+          { "id": "w1", "name": "Alice Johnson" },
+          { "id": "w2", "name": "Bob Smith"     },
+          { "id": "w3", "name": "Carol White"   }
+        ],
+        "workersByTask": {
+          "1": ["w1"],
+          "2": ["w1", "w2"],
+          "3": ["w3"],
+          "5": ["w2", "w3"]
+        },
+        "tasksByWorker": {
+          "w1": ["1", "2"],
+          "w2": ["2", "5"],
+          "w3": ["3", "5"]
+        }
+      }
+    }
+  ],
+
+  "settings": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "titleKey":      { "type": "string" },
+        "subtitleKey":   { "type": "string" },
+        "filterHintKey": { "type": "string" },
+        "noTasksKey":    { "type": "string" },
+        "accentColor":   { "type": "string", "enum": ["indigo","green","amber","cyan","red"] },
+        "tasks":         { "type": "array",  "items": { "type": "object" } },
+        "workers":       { "type": "array",  "items": { "type": "object" } },
+        "workersByTask": { "type": "object" },
+        "tasksByWorker": { "type": "object" }
+      }
+    }
+  },
+
+  "events": [
+    { "name": "onTaskMove",  "label": "On Task Move"  },
+    { "name": "onTaskClick", "label": "On Task Click" },
+    { "name": "onLanguageChange", "label": "On Language Change" }
+  ]
+}

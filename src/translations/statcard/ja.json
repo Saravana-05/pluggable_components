@@ -1,0 +1,19 @@
+{
+  "metricName":          "指標名",
+  "activeProjects":      "進行中のプロジェクト",
+  "onTrack":             "順調",
+  "delayedProjects":     "遅延プロジェクト",
+  "revenueVsForecast":   "収益対予測",
+  "cashFlow":            "キャッシュフロー",
+  "resourceUtilization": "リソース稼働率",
+  "vsPrev":              "前期比",
+  "progress":            "進捗",
+  "of":                  "/",
+  "forecast":            "予測",
+  "goal":                "目標",
+  "budget":              "予算",
+  "target":              "目標値",
+  "new":                 "新規",
+  "more":                "以上",
+  "healthy":             "良好"
+}

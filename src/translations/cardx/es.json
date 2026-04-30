@@ -1,0 +1,12 @@
+{
+  "featureCard":    "Tarjeta destacada",
+  "featureDesc":    "Muestra información completa con imagen y badge.",
+  "quickInfo":      "Información rápida",
+  "quickInfoDesc":  "Solo título y descripción.",
+  "warning":        "Advertencia",
+  "warningDesc":    "Aviso importante para situaciones urgentes.",
+  "visualCard":     "Tarjeta visual",
+  "new":            "Nuevo",
+  "urgent":         "Urgente",
+  "photo":          "Foto"
+}

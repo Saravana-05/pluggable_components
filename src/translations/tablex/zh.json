@@ -1,0 +1,5 @@
+{
+  "dataTable":"数据表","summary":"摘要","noData":"暂无数据。","showing":"显示",
+  "colName":"名称","colStatus":"状态","colValue":"数值","colLabel":"标签","colCount":"数量","colPct":"%",
+  "statusActive":"活跃","statusPending":"待处理","statusDone":"完成","statusInProgress":"进行中","statusBlocked":"阻塞"
+}

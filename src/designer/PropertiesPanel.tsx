@@ -1,7 +1,5 @@
 import { useStore } from '../store/designerStore'
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
-
 const panel: React.CSSProperties = {
   width: 240,
   height: '100%',
@@ -76,35 +74,16 @@ const bindingHint: React.CSSProperties = {
   fontStyle: 'italic',
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-/** Returns true when the string is an unresolved canvas binding, e.g. "{{sales}}" */
 function isBinding(v: unknown): boolean {
   return typeof v === 'string' && /^\s*\{\{.+\}\}\s*$/.test(v)
 }
 
-/**
- * Coerce a raw string from a text input to the right JS type for storage.
- *
- * Rules (applied in order):
- *   1. "{{…}}"  → keep as string  (binding ref — never coerce)
- *   2. ""       → null            (empty = cleared)
- *   3. numeric  → number          (plain "42" or "3.14")
- *   4. else     → string          (free text)
- *
- * This means the store always holds either:
- *   • a binding string  "{{myVar}}"
- *   • a real number     42
- *   • null              (cleared / no target)
- */
 function coerceBindableValue(raw: string): string | number | null {
-  if (isBinding(raw)) return raw           // preserve {{…}} as-is
+  if (isBinding(raw)) return raw
   if (raw.trim() === '') return null
   const n = Number(raw)
   return isNaN(n) ? raw : n
 }
-
-// ─── PropertiesPanel ──────────────────────────────────────────────────────────
 
 interface PropertiesPanelProps {
   loader: { getMeta: (type: string) => any }
@@ -143,8 +122,8 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
 
   const schemaProps: Record<string, any> = schema.properties ?? {}
 
-  // Skip fields that are too complex for auto-gen or internal-only
-  const SKIP = new Set(['sparkData', 'labels', 'cards'])
+  // locale removed — language is controlled globally via the canvas language selector
+  const SKIP = new Set(['sparkData', 'labels', 'cards', 'locale'])
 
   return (
     <div style={panel}>
@@ -156,13 +135,10 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
         const raw   = node.props[key]
         const value = raw ?? def.default ?? ''
 
-        // ── x-binding: true  OR  type is array ["number","string"]
-        //    → always render as a plain text input so "{{var}}" is never coerced
         const isBindable =
           def['x-binding'] === true ||
           (Array.isArray(def.type) && def.type.includes('string') && def.type.includes('number'))
 
-        // ── array with enum → multi-checkbox (e.g. visibleFields) ──
         if (def.type === 'array' && def.items?.enum) {
           const checked: string[] = Array.isArray(value) ? value : []
           return (
@@ -190,7 +166,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
           )
         }
 
-        // ── string with enum → <select> ──
         if (def.type === 'string' && def.enum) {
           return (
             <div key={key} style={fieldWrap}>
@@ -208,9 +183,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
           )
         }
 
-        // ── bindable field (number | string union, or x-binding:true)
-        //    Use a TEXT input — never type="number" — so "{{var}}" is never coerced.
-        //    On change, coerceBindableValue() decides whether to store a number or string.
         if (isBindable) {
           const displayValue = value === null || value === undefined ? '' : String(value)
           const looksLikeBinding = isBinding(displayValue)
@@ -219,7 +191,7 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
               <label style={labelStyle}>{key}</label>
               <input
                 style={looksLikeBinding ? bindingInputStyle : inputStyle}
-                type="text"                          // ← NEVER type="number" for bindable fields
+                type="text"
                 value={displayValue}
                 placeholder={`number or {{binding}}`}
                 onChange={(e) => {
@@ -232,7 +204,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
           )
         }
 
-        // ── plain string → <input text> ──
         if (def.type === 'string') {
           return (
             <div key={key} style={fieldWrap}>
@@ -248,7 +219,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
           )
         }
 
-        // ── pure number (NOT bindable) → <input number> ──
         if (def.type === 'number') {
           return (
             <div key={key} style={fieldWrap}>
@@ -267,7 +237,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
           )
         }
 
-        // ── boolean → toggle checkbox ──
         if (def.type === 'boolean') {
           return (
             <div key={key} style={fieldWrap}>
@@ -289,7 +258,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
         return null
       })}
 
-      {/* ── Actions ───────────────────────────────────────────────────────── */}
       <div style={divider} />
       <div style={sectionTitle}>Actions</div>
 
@@ -326,7 +294,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
         )
       })}
 
-      {/* ── Position ──────────────────────────────────────────────────────── */}
       <div style={divider} />
       <div style={sectionTitle}>Position</div>
       <div style={{ display: 'flex', gap: 8 }}>
@@ -338,7 +305,6 @@ export function PropertiesPanel({ loader }: PropertiesPanelProps) {
         ))}
       </div>
 
-      {/* ── Delete ────────────────────────────────────────────────────────── */}
       <button style={deleteBtn} onClick={() => deleteNode(node.id)}>
         🗑 Delete node
       </button>

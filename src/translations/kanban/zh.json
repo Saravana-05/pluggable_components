@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "看板",
+  "boardSubtitle":"拖动任务以更新状态",
+  "filterHint":   "点击成员进行筛选",
+  "noTasks":      "暂无任务",
+  "colBacklog":   "待办事项",
+  "colTodo":      "待处理",
+  "colInProgress":"进行中",
+  "colReview":    "审核中",
+  "colDone":      "已完成"
+}

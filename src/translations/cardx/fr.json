@@ -1,0 +1,12 @@
+{
+  "featureCard":    "Carte vedette",
+  "featureDesc":    "Affiche toutes les infos avec image et badge.",
+  "quickInfo":      "Info rapide",
+  "quickInfoDesc":  "Titre et description uniquement.",
+  "warning":        "Avertissement",
+  "warningDesc":    "Notice importante pour les situations urgentes.",
+  "visualCard":     "Carte visuelle",
+  "new":            "Nouveau",
+  "urgent":         "Urgent",
+  "photo":          "Photo"
+}

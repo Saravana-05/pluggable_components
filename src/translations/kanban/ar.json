@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "لوحة كانبان",
+  "boardSubtitle":"اسحب المهام بين الأعمدة لتحديث الحالة",
+  "filterHint":   "انقر على عضو للتصفية",
+  "noTasks":      "لا توجد مهام",
+  "colBacklog":   "قائمة الانتظار",
+  "colTodo":      "للقيام به",
+  "colInProgress":"قيد التنفيذ",
+  "colReview":    "قيد المراجعة",
+  "colDone":      "مكتمل"
+}

@@ -1,0 +1,19 @@
+{
+  "dataTable":       "جدول البيانات",
+  "summary":         "ملخص",
+  "noData":          "لا توجد بيانات.",
+  "showing":         "عرض",
+
+  "colName":         "الاسم",
+  "colStatus":       "الحالة",
+  "colValue":        "القيمة",
+  "colLabel":        "التسمية",
+  "colCount":        "العدد",
+  "colPct":          "%",
+
+  "statusActive":     "نشط",
+  "statusPending":    "قيد الانتظار",
+  "statusDone":       "مكتمل",
+  "statusInProgress": "قيد التنفيذ",
+  "statusBlocked":    "محظور"
+}

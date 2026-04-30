@@ -1,0 +1,19 @@
+{
+  "metricName":          "मेट्रिक नाम",
+  "activeProjects":      "सक्रिय परियोजनाएं",
+  "onTrack":             "सही रास्ते पर",
+  "delayedProjects":     "विलंबित परियोजनाएं",
+  "revenueVsForecast":   "राजस्व बनाम पूर्वानुमान",
+  "cashFlow":            "नकदी प्रवाह",
+  "resourceUtilization": "संसाधन उपयोग",
+  "vsPrev":              "बनाम पिछला",
+  "progress":            "प्रगति",
+  "of":                  "/",
+  "forecast":            "पूर्वानुमान",
+  "goal":                "लक्ष्य",
+  "budget":              "बजट",
+  "target":              "लक्ष्य",
+  "new":                 "नया",
+  "more":                "अधिक",
+  "healthy":             "स्वस्थ"
+}

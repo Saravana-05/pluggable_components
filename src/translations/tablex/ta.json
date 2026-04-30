@@ -1,0 +1,19 @@
+{
+  "dataTable":       "தரவு அட்டவணை",
+  "summary":         "சுருக்கம்",
+  "noData":          "தரவு எதுவும் இல்லை.",
+  "showing":         "காட்டுகிறது",
+
+  "colName":         "பெயர்",
+  "colStatus":       "நிலை",
+  "colValue":        "மதிப்பு",
+  "colLabel":        "தலைப்பு",
+  "colCount":        "எண்ணிக்கை",
+  "colPct":          "%",
+
+  "statusActive":     "செயலில்",
+  "statusPending":    "நிலுவையில்",
+  "statusDone":       "முடிந்தது",
+  "statusInProgress": "நடைபெறுகிறது",
+  "statusBlocked":    "தடுக்கப்பட்டது"
+}

@@ -1,0 +1,5 @@
+{
+  "dataTable":"Tableau","summary":"Résumé","noData":"Aucune donnée.","showing":"Affichage",
+  "colName":"Nom","colStatus":"Statut","colValue":"Valeur","colLabel":"Étiquette","colCount":"Nombre","colPct":"%",
+  "statusActive":"Actif","statusPending":"En attente","statusDone":"Terminé","statusInProgress":"En cours","statusBlocked":"Bloqué"
+}

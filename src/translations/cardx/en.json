@@ -1,0 +1,12 @@
+{
+  "featureCard":    "Feature Card",
+  "featureDesc":    "This card shows full info with image and badge.",
+  "quickInfo":      "Quick Info",
+  "quickInfoDesc":  "Just title and description, nothing else.",
+  "warning":        "Warning",
+  "warningDesc":    "Critical notice for urgent situations.",
+  "visualCard":     "Visual Card",
+  "new":            "New",
+  "urgent":         "Urgent",
+  "photo":          "Photo"
+}

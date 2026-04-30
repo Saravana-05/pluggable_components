@@ -1,63 +1,88 @@
 {
-    "name": "ButtonX",
-    "category": "Buttons",
-    "type": "local",
-    "entry": "./index.tsx",
-    "enabled": true,
-    "ui": {
-        "canvasIcon": "./favicon.svg"
+  "name": "ButtonX",
+  "category": "Buttons",
+  "type": "local",
+  "entry": "./index.tsx",
+  "enabled": true,
+  "multiLang": {
+    "module": "buttonx",
+    "propMap": {
+      "labelKey": "label"
+    }
+  },
+  "ui": {
+    "canvasIcon": "./favicon.svg"
+  },
+  "presets": [
+    {
+      "id": "btn-primary",
+      "label": "Primary Button",
+      "thumbnail": "🔵",
+      "defaultProps": {
+        "labelKey": "submit",
+        "variant":   "primary",
+        "size":      "md",
+        "fullWidth": false,
+        "disabled":  false
+      }
     },
-    "actions": [
-        {
-            "trigger": "iconClick",
-            "type": "redirect",
-            "url": "/landing",
-            "target": "_self"
+    {
+      "id": "btn-secondary",
+      "label": "Secondary Button",
+      "thumbnail": "⚪",
+      "defaultProps": {
+        "labelKey": "cancel",
+        "variant":   "secondary",
+        "size":      "md",
+        "fullWidth": false,
+        "disabled":  false
+      }
+    },
+    {
+      "id": "btn-danger",
+      "label": "Danger Button",
+      "thumbnail": "🔴",
+      "defaultProps": {
+        "labelKey": "delete",
+        "variant":   "danger",
+        "size":      "md",
+        "fullWidth": false,
+        "disabled":  false
+      }
+    },
+    {
+      "id": "btn-ghost",
+      "label": "Ghost Button",
+      "thumbnail": "👻",
+      "defaultProps": {
+        "labelKey": "learnMore",
+        "variant":   "ghost",
+        "size":      "md",
+        "fullWidth": false,
+        "disabled":  false
+      }
+    }
+  ],
+  "settings": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "labelKey": { "type": "string", "description": "i18n key for button label" },
+        "label":    { "type": "string", "description": "Plain label fallback" },
+        "variant": {
+          "type": "string",
+          "enum": ["primary", "secondary", "danger", "ghost"]
         },
-        {
-            "trigger": "buttonClick",
-            "type": "redirect",
-            "url": "/landing",
-            "target": "_self"
-        }
-    ],
-    "settings": {
-        "schema": {
-            "type": "object",
-            "properties": {
-                "label": {
-                    "type": "string"
-                },
-                "variant": {
-                    "type": "string",
-                    "enum": [
-                        "primary",
-                        "secondary",
-                        "danger",
-                        "ghost"
-                    ]
-                },
-                "size": {
-                    "type": "string",
-                    "enum": [
-                        "sm",
-                        "md",
-                        "lg"
-                    ]
-                },
-                "fullWidth": {
-                    "type": "boolean"
-                },
-                "disabled": {
-                    "type": "boolean"
-                }
-            }
-        }
-    },
-    "events": [
-        {
-            "name": "onClick",
-            "label": "On Click"
-        }
-    ]
+        "size": {
+          "type": "string",
+          "enum": ["sm", "md", "lg"]
+        },
+        "fullWidth": { "type": "boolean" },
+        "disabled":  { "type": "boolean" }
+      }
+    }
+  },
+  "events": [
+    { "name": "onClick", "label": "On Click" }
+  ]
 }

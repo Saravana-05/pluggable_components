@@ -1,0 +1,19 @@
+{
+  "metricName":          "اسم المقياس",
+  "activeProjects":      "المشاريع النشطة",
+  "onTrack":             "على المسار",
+  "delayedProjects":     "المشاريع المتأخرة",
+  "revenueVsForecast":   "الإيرادات مقابل التوقعات",
+  "cashFlow":            "التدفق النقدي",
+  "resourceUtilization": "استخدام الموارد",
+  "vsPrev":              "مقابل السابق",
+  "progress":            "التقدم",
+  "of":                  "من",
+  "forecast":            "التوقعات",
+  "goal":                "الهدف",
+  "budget":              "الميزانية",
+  "target":              "المستهدف",
+  "new":                 "جديد",
+  "more":                "أكثر",
+  "healthy":             "جيد"
+}

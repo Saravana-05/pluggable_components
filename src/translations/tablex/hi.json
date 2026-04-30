@@ -1,0 +1,19 @@
+{
+  "dataTable":       "डेटा तालिका",
+  "summary":         "सारांश",
+  "noData":          "कोई डेटा उपलब्ध नहीं।",
+  "showing":         "दिखा रहा है",
+
+  "colName":         "नाम",
+  "colStatus":       "स्थिति",
+  "colValue":        "मूल्य",
+  "colLabel":        "लेबल",
+  "colCount":        "गिनती",
+  "colPct":          "%",
+
+  "statusActive":     "सक्रिय",
+  "statusPending":    "लंबित",
+  "statusDone":       "पूर्ण",
+  "statusInProgress": "प्रगति में",
+  "statusBlocked":    "अवरुद्ध"
+}

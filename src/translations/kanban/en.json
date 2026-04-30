@@ -1,0 +1,11 @@
+{
+  "boardTitle":   "Kanban Board",
+  "boardSubtitle":"Drag tasks between columns to update status",
+  "filterHint":   "Click a member to filter · Drag to change status",
+  "noTasks":      "No tasks",
+  "colBacklog":   "Backlog",
+  "colTodo":      "To Do",
+  "colInProgress":"In Progress",
+  "colReview":    "In Review",
+  "colDone":      "Done"
+}

@@ -1,5 +1,5 @@
 // labels/LabelBus.ts
-import { SupportedLang } from './registry'
+import type { SupportedLang } from '../labels/registry';
 
 type Subscriber = (lang: SupportedLang) => void
 

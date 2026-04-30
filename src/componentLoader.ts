@@ -1,3 +1,5 @@
+import { withMultiLang } from './components/withMultiLang'
+
 export class ComponentLoader {
   registry: Record<string, any> = {}
   meta: Record<string, any> = {}
@@ -12,15 +14,17 @@ export class ComponentLoader {
       const cfg = manifest.components[name]
       if (!cfg) continue
 
-      // FIX: manifestBuilder stores { component, config } shape.
-      // cfg.enabled doesn't exist — the enabled flag is on cfg.config.enabled.
-      // Also, components loaded via eager glob already have .component set directly,
-      // so we don't need loadComponent() for those — just register directly.
       if (cfg.config?.enabled === false) continue
 
       // If the component was already bundled by manifestBuilder (eager glob), use it directly.
       // Otherwise fall back to dynamic import via config.entry.
-      const comp = cfg.component ?? await this.loadComponent(cfg.config ?? cfg)
+      let comp = cfg.component ?? await this.loadComponent(cfg.config ?? cfg)
+
+      // If component.json has a multiLang section, wrap automatically.
+      // No changes needed to the component itself.
+      if (cfg.config?.multiLang) {
+        comp = withMultiLang(comp, cfg.config.multiLang.module, cfg.config.multiLang.propMap)
+      }
 
       this.registry[name] = comp
       this.meta[name] = cfg.config ?? cfg

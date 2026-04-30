@@ -120,3 +120,27 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* ── Custom scrollbars — thin, dark, matches UI ── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2e3148;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3d5a;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2e3148 transparent;
+}

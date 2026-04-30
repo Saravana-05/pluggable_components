@@ -1,0 +1,19 @@
+{
+  "metricName":          "Nom de la métrique",
+  "activeProjects":      "Projets actifs",
+  "onTrack":             "Dans les délais",
+  "delayedProjects":     "Projets en retard",
+  "revenueVsForecast":   "Revenus vs prévisions",
+  "cashFlow":            "Flux de trésorerie",
+  "resourceUtilization": "Utilisation des ressources",
+  "vsPrev":              "vs préc.",
+  "progress":            "Progression",
+  "of":                  "de",
+  "forecast":            "Prévision",
+  "goal":                "Objectif",
+  "budget":              "Budget",
+  "target":              "Cible",
+  "new":                 "nouveau",
+  "more":                "de plus",
+  "healthy":             "Sain"
+}

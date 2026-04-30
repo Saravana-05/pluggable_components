@@ -11,9 +11,10 @@ interface PresetTileProps {
     defaultProps: Record<string, any>
     defaultActions?: Record<string, any>
   }
+  compact?: boolean
 }
 
-function PresetTile({ componentType, preset }: PresetTileProps) {
+function PresetTile({ componentType, preset, compact = false }: PresetTileProps) {
   const draggableId = `preset::${componentType}::${preset.id}`
 
   const { setNodeRef, listeners, attributes, isDragging } = useDraggable({
@@ -21,37 +22,44 @@ function PresetTile({ componentType, preset }: PresetTileProps) {
     data: { componentType, preset },
   })
 
-  // ── Component-aware prop pills ────────────────────────────────────────────
-  const pills: string[] = []
-  const p = preset.defaultProps
-
-  if (Array.isArray(p.visibleFields)) {
-    // CardX — show which sections are visible
-    const fieldLabels: Record<string, string> = {
-      image: '🖼 img', badge: '🏷 badge', description: '📝 desc',
-    }
-    pills.push('🔤 title')
-    p.visibleFields.forEach((f: string) => pills.push(fieldLabels[f] ?? f))
-
-  } else if ('trendValue' in p || 'value' in p) {
-    // StatCard — show the key stat fields
-    if (p.label)         pills.push(`📌 ${String(p.label).slice(0, 10)}`)
-    if (p.value != null) pills.push(`# ${p.value}${p.unit ?? ''}`)
-    if (p.trendValue != null && p.trendValue !== 0)
-      pills.push(p.trendValue > 0 ? `↑ ${p.trendValue}%` : `↓ ${Math.abs(p.trendValue)}%`)
-    if (p.accentColor)   pills.push(`🎨 ${p.accentColor}`)
-
-  } else {
-    // Generic fallback
-    const SKIP = new Set(['sparkData', 'imageUrl', 'locale', 'labels', 'visibleFields'])
-    for (const [key, val] of Object.entries(p)) {
-      if (SKIP.has(key) || val === '' || val == null || typeof val === 'object') continue
-      const strVal = String(val)
-      pills.push(typeof val === 'boolean' ? `${key}: ${val}` : strVal.length <= 12 ? strVal : key)
-      if (pills.length >= 4) break
-    }
+  // ── Compact (2-col grid) tile for Buttons ─────────────────────────────────
+  if (compact) {
+    return (
+      <div
+        ref={setNodeRef}
+        {...listeners}
+        {...attributes}
+        title={`Drag to canvas — ${preset.label}`}
+        style={{
+          background:   isDragging ? '#252840' : '#1a1c2e',
+          border:       '1px solid #2e3148',
+          borderRadius: 8,
+          padding:      '8px 6px',
+          cursor:       'grab',
+          opacity:      isDragging ? 0.45 : 1,
+          transition:   'background 0.15s, opacity 0.15s',
+          userSelect:   'none',
+          textAlign:    'center',
+        }}
+      >
+        <div style={{ fontSize: 18, lineHeight: 1, marginBottom: 4 }}>
+          {preset.thumbnail || '🧩'}
+        </div>
+        <div style={{
+          fontSize:     11,
+          fontWeight:   600,
+          color:        '#e5e7eb',
+          whiteSpace:   'nowrap',
+          overflow:     'hidden',
+          textOverflow: 'ellipsis',
+        }}>
+          {preset.label}
+        </div>
+      </div>
+    )
   }
 
+  // ── Normal (single column) tile for everything else ───────────────────────
   return (
     <div
       ref={setNodeRef}
@@ -59,71 +67,36 @@ function PresetTile({ componentType, preset }: PresetTileProps) {
       {...attributes}
       title={`Drag to canvas — ${preset.label}`}
       style={{
-        padding: '10px 12px',
+        padding:      '10px 12px',
         marginBottom: 8,
-        background: isDragging ? '#252840' : '#1a1c2e',
-        border: '1px solid #2e3148',
+        background:   isDragging ? '#252840' : '#1a1c2e',
+        border:       '1px solid #2e3148',
         borderRadius: 10,
-        cursor: 'grab',
-        opacity: isDragging ? 0.45 : 1,
-        transition: 'background 0.15s, opacity 0.15s',
-        userSelect: 'none',
+        cursor:       'grab',
+        opacity:      isDragging ? 0.45 : 1,
+        transition:   'background 0.15s, opacity 0.15s',
+        userSelect:   'none',
       }}
     >
-      {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 22, lineHeight: 1 }}>
           {preset.thumbnail || '🧩'}
         </span>
         <div style={{ minWidth: 0 }}>
-          <div
-            style={{
-              fontWeight: 600,
-              fontSize: 13,
-              color: '#e5e7eb',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-            }}
-          >
+          <div style={{
+            fontWeight:   600,
+            fontSize:     13,
+            color:        '#e5e7eb',
+            whiteSpace:   'nowrap',
+            overflow:     'hidden',
+            textOverflow: 'ellipsis',
+          }}>
             {preset.label}
           </div>
           <div style={{ fontSize: 11, color: '#4b5563' }}>{componentType}</div>
         </div>
       </div>
-
-      {/* Prop pills */}
-      {pills.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-          {pills.map((p) => (
-            <FieldPill key={p} label={p} />
-          ))}
-        </div>
-      )}
     </div>
-  )
-}
-
-function FieldPill({ label }: { label: string }) {
-  return (
-    <span
-      style={{
-        fontSize: 10,
-        padding: '2px 6px',
-        borderRadius: 20,
-        background: 'rgba(99,102,241,0.15)',
-        color: '#818cf8',
-        border: '1px solid rgba(99,102,241,0.3)',
-        fontWeight: 500,
-        maxWidth: 90,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        display: 'inline-block',
-      }}
-    >
-      {label}
-    </span>
   )
 }
 
@@ -141,32 +114,23 @@ interface ComponentSidebarProps {
   }
 }
 
-/** Normalise whatever getAllMeta() returns into a flat ComponentMeta array. */
 function normaliseMeta(
   raw: ReturnType<ComponentSidebarProps['loader']['getAllMeta']>
 ): ComponentMeta[] {
   if (!raw) return []
-
-  // Already a plain array
   if (Array.isArray(raw)) return raw
-
-  // A single meta object (not wrapped in array / map)
   if (typeof raw === 'object' && 'name' in raw && typeof (raw as any).name === 'string') {
     return [raw as ComponentMeta]
   }
-
-  // A map: { CardX: { name, presets, … }, StatCard: { … } }
   if (typeof raw === 'object') {
     return Object.values(raw as Record<string, ComponentMeta>)
   }
-
   return []
 }
 
 export function ComponentSidebar({ loader }: ComponentSidebarProps) {
   const allMeta = normaliseMeta(loader.getAllMeta())
 
-  // Group by category
   const grouped = allMeta.reduce<Record<string, ComponentMeta[]>>((acc, meta) => {
     const cat = meta.category ?? 'Other'
     if (!acc[cat]) acc[cat] = []
@@ -177,72 +141,77 @@ export function ComponentSidebar({ loader }: ComponentSidebarProps) {
   const hasAnything = allMeta.some((m) => (m.presets?.length ?? 0) > 0)
 
   return (
-    <div
-      style={{
-        width: 220,
-        height: '100%',
-        overflowY: 'auto',
-        borderRight: '1px solid #1e2130',
-        background: '#13141f',
-        padding: '12px 10px',
-        boxSizing: 'border-box',
-      }}
-    >
-      {/* Header */}
-      <div
-        style={{
-          fontSize: 11,
-          fontWeight: 700,
-          color: '#4b5563',
-          letterSpacing: '0.1em',
-          textTransform: 'uppercase',
-          marginBottom: 14,
-          paddingLeft: 2,
-        }}
-      >
+    <div style={{
+      width:       220,
+      height:      '100%',
+      overflowY:   'auto',
+      borderRight: '1px solid #1e2130',
+      background:  '#13141f',
+      padding:     '12px 10px',
+      boxSizing:   'border-box',
+    }}>
+      <div style={{
+        fontSize:      11,
+        fontWeight:    700,
+        color:         '#4b5563',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+        marginBottom:  14,
+        paddingLeft:   2,
+      }}>
         Components
       </div>
 
-      {/* Empty state */}
       {!hasAnything && (
         <div style={{ fontSize: 12, color: '#374151', paddingLeft: 2, lineHeight: 1.6 }}>
-          No components loaded.
-          <br />
-          Check your loader.
+          No components loaded.<br />Check your loader.
         </div>
       )}
 
       {Object.entries(grouped).map(([category, components]) => {
-        // Skip categories where no component has any presets
         const tiles = components.flatMap((meta) => meta.presets ?? [])
         if (tiles.length === 0) return null
 
+        const isButtonCategory = category === 'Buttons'
+
         return (
           <div key={category} style={{ marginBottom: 20 }}>
-            {/* Category label */}
-            <div
-              style={{
-                fontSize: 10,
-                fontWeight: 600,
-                color: '#374151',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                marginBottom: 8,
-                paddingLeft: 2,
-              }}
-            >
+            <div style={{
+              fontSize:      10,
+              fontWeight:    600,
+              color:         '#374151',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              marginBottom:  8,
+              paddingLeft:   2,
+            }}>
               {category}
             </div>
 
-            {/* Preset tiles */}
-            {components.map((meta) =>
-              (meta.presets ?? []).map((preset) => (
-                <PresetTile
-                  key={`${meta.name}-${preset.id}`}
-                  componentType={meta.name}
-                  preset={preset}
-                />
-              ))
+            {/* 2-col grid for Buttons, normal list for everything else */}
+            {isButtonCategory ? (
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                {components.map((meta) =>
+                  (meta.presets ?? []).map((preset) => (
+                    <PresetTile
+                      key={`${meta.name}-${preset.id}`}
+                      componentType={meta.name}
+                      preset={preset}
+                      compact
+                    />
+                  ))
+                )}
+              </div>
+            ) : (
+              components.map((meta) =>
+                (meta.presets ?? []).map((preset) => (
+                  <PresetTile
+                    key={`${meta.name}-${preset.id}`}
+                    componentType={meta.name}
+                    preset={preset}
+                  />
+                ))
+              )
             )}
           </div>
         )

@@ -1,0 +1,12 @@
+{
+  "featureCard":    "特集カード",
+  "featureDesc":    "画像とバッジ付きの完全な情報を表示します。",
+  "quickInfo":      "クイック情報",
+  "quickInfoDesc":  "タイトルと説明のみ。",
+  "warning":        "警告",
+  "warningDesc":    "緊急事態への重要なお知らせ。",
+  "visualCard":     "ビジュアルカード",
+  "new":            "新しい",
+  "urgent":         "緊急",
+  "photo":          "写真"
+}

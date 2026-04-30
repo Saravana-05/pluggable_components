@@ -1,0 +1,97 @@
+{
+  "name": "TableX",
+  "category": "Tables",
+  "type": "local",
+  "entry": "./tables.tsx",
+  "enabled": true,
+
+  "multiLang": {
+    "module": "tablex",
+    "propMap": {
+      "titleKey":        "title",
+      "emptyMessageKey": "emptyMessage",
+      "showingLabelKey": "showingLabel"
+    }
+  },
+
+  "ui": {
+    "canvasIcon": "./table-canvas-icon.svg"
+  },
+
+  "presets": [
+    {
+      "id": "table-default",
+      "label": "Data Table",
+      "thumbnail": "📊",
+      "defaultProps": {
+        "titleKey":        "dataTable",
+        "emptyMessageKey": "noData",
+        "showingLabelKey": "showing",
+        "striped":     true,
+        "bordered":    false,
+        "compact":     false,
+        "showHeader":  true,
+        "showTitle":   true,
+        "accentColor": "indigo",
+        "columns": [
+          { "key": "name",   "headerKey": "colName",   "align": "left"  },
+          { "key": "status", "headerKey": "colStatus", "align": "left"  },
+          { "key": "value",  "headerKey": "colValue",  "align": "right" }
+        ],
+        "rows": [
+          { "name": "Project Alpha", "statusKey": "statusActive",  "value": "$12,400" },
+          { "name": "Project Beta",  "statusKey": "statusPending", "value": "$8,200"  },
+          { "name": "Project Gamma", "statusKey": "statusDone",    "value": "$31,000" }
+        ]
+      }
+    },
+    {
+      "id": "table-compact",
+      "label": "Compact Table",
+      "thumbnail": "📋",
+      "defaultProps": {
+        "titleKey":        "summary",
+        "emptyMessageKey": "noData",
+        "showingLabelKey": "showing",
+        "striped":     true,
+        "bordered":    true,
+        "compact":     true,
+        "showHeader":  true,
+        "showTitle":   true,
+        "accentColor": "cyan",
+        "columns": [
+          { "key": "label", "headerKey": "colLabel", "align": "left"  },
+          { "key": "count", "headerKey": "colCount", "align": "right" },
+          { "key": "pct",   "headerKey": "colPct",   "align": "right" }
+        ],
+        "rows": [
+          { "labelKey": "statusDone",       "count": 42, "pct": "72%" },
+          { "labelKey": "statusInProgress", "count": 11, "pct": "19%" },
+          { "labelKey": "statusBlocked",    "count": 5,  "pct": "9%"  }
+        ]
+      }
+    }
+  ],
+
+  "settings": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "titleKey":        { "type": "string" },
+        "emptyMessageKey": { "type": "string" },
+        "showingLabelKey": { "type": "string" },
+        "striped":         { "type": "boolean" },
+        "bordered":        { "type": "boolean" },
+        "compact":         { "type": "boolean" },
+        "showHeader":      { "type": "boolean" },
+        "showTitle":       { "type": "boolean" },
+        "maxRows":         { "type": "number"  },
+        "accentColor":     { "type": "string", "enum": ["indigo","green","amber","cyan","red"] }
+      }
+    }
+  },
+
+  "events": [
+    { "name": "onClick", "label": "On Click" }
+  ]
+}

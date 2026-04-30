@@ -1,0 +1,5 @@
+{
+  "dataTable":"Datentabelle","summary":"Zusammenfassung","noData":"Keine Daten.","showing":"Anzeige",
+  "colName":"Name","colStatus":"Status","colValue":"Wert","colLabel":"Bezeichnung","colCount":"Anzahl","colPct":"%",
+  "statusActive":"Aktiv","statusPending":"Ausstehend","statusDone":"Fertig","statusInProgress":"In Bearbeitung","statusBlocked":"Blockiert"
+}

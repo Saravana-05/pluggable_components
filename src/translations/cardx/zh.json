@@ -1,0 +1,12 @@
+{
+  "featureCard":    "特色卡片",
+  "featureDesc":    "显示带图片和徽章的完整信息。",
+  "quickInfo":      "快速信息",
+  "quickInfoDesc":  "仅标题和描述。",
+  "warning":        "警告",
+  "warningDesc":    "紧急情况的重要通知。",
+  "visualCard":     "视觉卡片",
+  "new":            "新",
+  "urgent":         "紧急",
+  "photo":          "照片"
+}

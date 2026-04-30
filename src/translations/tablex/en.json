@@ -1,0 +1,19 @@
+{
+  "dataTable":       "Data Table",
+  "summary":         "Summary",
+  "noData":          "No data available.",
+  "showing":         "Showing",
+
+  "colName":         "Name",
+  "colStatus":       "Status",
+  "colValue":        "Value",
+  "colLabel":        "Label",
+  "colCount":        "Count",
+  "colPct":          "%",
+
+  "statusActive":     "Active",
+  "statusPending":    "Pending",
+  "statusDone":       "Done",
+  "statusInProgress": "In Progress",
+  "statusBlocked":    "Blocked"
+}

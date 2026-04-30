@@ -1,0 +1,12 @@
+{
+  "featureCard":    "Feature-Karte",
+  "featureDesc":    "Zeigt vollständige Infos mit Bild und Badge.",
+  "quickInfo":      "Kurzinfo",
+  "quickInfoDesc":  "Nur Titel und Beschreibung.",
+  "warning":        "Warnung",
+  "warningDesc":    "Wichtiger Hinweis für dringende Situationen.",
+  "visualCard":     "Visuelle Karte",
+  "new":            "Neu",
+  "urgent":         "Dringend",
+  "photo":          "Foto"
+}

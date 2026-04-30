@@ -1,0 +1,5 @@
+{
+  "dataTable":"データテーブル","summary":"サマリー","noData":"データなし。","showing":"表示中",
+  "colName":"名前","colStatus":"ステータス","colValue":"値","colLabel":"ラベル","colCount":"件数","colPct":"%",
+  "statusActive":"アクティブ","statusPending":"保留中","statusDone":"完了","statusInProgress":"進行中","statusBlocked":"ブロック"
+}
